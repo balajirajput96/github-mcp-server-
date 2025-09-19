@@ -1,0 +1,49 @@
+{
+  "name": "github-mcp-server",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol (MCP) server for GitHub API integration - AI agent deployment ready",
+  "type": "module",
+  "license": "MIT",
+  "author": "github-mcp-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/balajirajput96/github-mcp-server-"
+  },
+  "bin": {
+    "github-mcp-server": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@octokit/rest": "^21.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "github",
+    "ai",
+    "llm",
+    "agent",
+    "deployment"
+  ]
+}

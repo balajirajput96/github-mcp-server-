@@ -1,2 +1,216 @@
-# github-mcp-server-
-AI agent deploy 
+# GitHub MCP Server
+
+A Model Context Protocol (MCP) server that provides GitHub API integration for AI agents and assistants. This server enables AI tools like Claude to interact with GitHub repositories, issues, pull requests, and more through a standardized interface.
+
+## Features
+
+- **Repository Management**: List, view, and access repository information
+- **Issue Management**: List, create, and manage GitHub issues
+- **Pull Request Operations**: View and manage pull requests
+- **File Operations**: Read file contents from repositories
+- **User Information**: Access authenticated user details
+- **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18 or later
+- GitHub Personal Access Token
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/balajirajput96/github-mcp-server-.git
+cd github-mcp-server-
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env and add your GitHub token
+```
+
+4. Build the project:
+```bash
+npm run build
+```
+
+5. Run the server:
+```bash
+npm start
+```
+
+### Using with Claude Desktop
+
+Add this configuration to your Claude Desktop config file:
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "node",
+      "args": ["/path/to/github-mcp-server/dist/index.js"],
+      "env": {
+        "GITHUB_TOKEN": "your_github_token_here"
+      }
+    }
+  }
+}
+```
+
+## Configuration
+
+### Environment Variables
+
+- `GITHUB_TOKEN`: Your GitHub Personal Access Token (required)
+  - Generate at: https://github.com/settings/tokens
+  - Required scopes: `repo`, `read:user`
+
+### GitHub Token Setup
+
+1. Go to GitHub Settings → Developer settings → Personal access tokens
+2. Click "Generate new token (classic)"
+3. Select required scopes:
+   - `repo` - Full control of private repositories
+   - `read:user` - Read access to user profile data
+4. Copy the generated token and add it to your `.env` file
+
+## Available Tools
+
+### Repository Tools
+- `list_repositories` - List repositories for the authenticated user
+- `get_repository` - Get detailed repository information
+
+### Issue Tools
+- `list_issues` - List issues for a repository
+- `create_issue` - Create a new issue
+
+### Pull Request Tools
+- `list_pull_requests` - List pull requests for a repository
+
+### File Tools
+- `get_file_content` - Get file content from a repository
+
+### Resources
+- `github://user` - Information about the authenticated user
+
+## Development
+
+### Build
+```bash
+npm run build
+```
+
+### Watch mode (development)
+```bash
+npm run dev
+```
+
+### Clean build
+```bash
+npm run clean
+npm run build
+```
+
+### MCP Inspector
+For debugging and testing:
+```bash
+npm run inspector
+```
+
+## Docker Deployment
+
+### Build Image
+```bash
+docker build -t github-mcp-server .
+```
+
+### Run Container
+```bash
+docker run -e GITHUB_TOKEN=your_token_here github-mcp-server
+```
+
+### Docker Compose
+```yaml
+version: '3.8'
+services:
+  github-mcp-server:
+    build: .
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    volumes:
+      - ./data:/app/data
+```
+
+## CI/CD
+
+This project includes GitHub Actions workflows for:
+- Automated testing on Node.js 18 and 20
+- Docker image building
+- Release artifact creation
+
+## Usage Examples
+
+### With Claude Desktop
+
+Once configured, you can ask Claude to:
+
+- "List my GitHub repositories"
+- "Show me the open issues in my project repository"
+- "Create a new issue in my repository with title 'Bug fix needed'"
+- "Get the content of the README.md file from my repository"
+
+### Direct MCP Usage
+
+```bash
+# Start the server
+node dist/index.js
+
+# The server communicates via stdio using the MCP protocol
+```
+
+## API Documentation
+
+This server implements the Model Context Protocol (MCP) specification. All tools and resources follow MCP standards for:
+- Tool discovery and execution
+- Resource listing and reading
+- Error handling and responses
+
+## Security
+
+- Always use environment variables for sensitive data
+- Never commit GitHub tokens to version control
+- Use minimal required GitHub token scopes
+- Run in containerized environments when possible
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Support
+
+For issues and questions:
+1. Check the GitHub Issues page
+2. Review the MCP documentation
+3. Ensure your GitHub token has correct permissions
+
+## Related Projects
+
+- [Model Context Protocol](https://github.com/modelcontextprotocol)
+- [Claude Desktop](https://claude.ai/desktop)
+- [GitHub REST API](https://docs.github.com/en/rest)
