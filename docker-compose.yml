@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  github-mcp-server:
+    build: .
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - NODE_ENV=production
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    # For future HTTP interface (optional)
+    # ports:
+    #   - "3000:3000"
+    
+  # Optional: Add a simple health check service
+  healthcheck:
+    image: curlimages/curl:latest
+    depends_on:
+      - github-mcp-server
+    command: >
+      sh -c "
+        echo 'Health check placeholder - MCP server runs on stdio';
+        sleep 30;
+      "
+    restart: "no"
