@@ -91,9 +91,17 @@ Add this configuration to your Claude Desktop config file:
 ### Issue Tools
 - `list_issues` - List issues for a repository
 - `create_issue` - Create a new issue
+- `get_issue` - Get a specific issue by number
 
 ### Pull Request Tools
 - `list_pull_requests` - List pull requests for a repository
+- `get_pull_request` - Get a specific pull request by number
+
+### Commit Tools
+- `get_commit` - Get a specific commit by SHA or reference
+
+### Release Tools
+- `get_release` - Get the latest release or a specific release by tag
 
 ### File Tools
 - `get_file_content` - Get file content from a repository
@@ -166,6 +174,10 @@ Once configured, you can ask Claude to:
 - "Show me the open issues in my project repository"
 - "Create a new issue in my repository with title 'Bug fix needed'"
 - "Get the content of the README.md file from my repository"
+- "Get issue #42 from my repository"
+- "Show me pull request #15 from my repository"
+- "Get the latest release from my repository"
+- "Show me commit abc123 from my repository"
 
 ### Direct MCP Usage
 
