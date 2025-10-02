@@ -208,6 +208,94 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ['owner', 'repo', 'path'],
         },
       },
+      {
+        name: 'get_issue',
+        description: 'Get a specific issue by number',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            owner: {
+              type: 'string',
+              description: 'Repository owner',
+            },
+            repo: {
+              type: 'string',
+              description: 'Repository name',
+            },
+            issue_number: {
+              type: 'number',
+              description: 'Issue number',
+            },
+          },
+          required: ['owner', 'repo', 'issue_number'],
+        },
+      },
+      {
+        name: 'get_pull_request',
+        description: 'Get a specific pull request by number',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            owner: {
+              type: 'string',
+              description: 'Repository owner',
+            },
+            repo: {
+              type: 'string',
+              description: 'Repository name',
+            },
+            pull_number: {
+              type: 'number',
+              description: 'Pull request number',
+            },
+          },
+          required: ['owner', 'repo', 'pull_number'],
+        },
+      },
+      {
+        name: 'get_commit',
+        description: 'Get a specific commit',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            owner: {
+              type: 'string',
+              description: 'Repository owner',
+            },
+            repo: {
+              type: 'string',
+              description: 'Repository name',
+            },
+            ref: {
+              type: 'string',
+              description: 'Commit SHA or branch name',
+            },
+          },
+          required: ['owner', 'repo', 'ref'],
+        },
+      },
+      {
+        name: 'get_release',
+        description: 'Get the latest release or a specific release by tag',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            owner: {
+              type: 'string',
+              description: 'Repository owner',
+            },
+            repo: {
+              type: 'string',
+              description: 'Repository name',
+            },
+            tag: {
+              type: 'string',
+              description: 'Release tag (optional, gets latest if not provided)',
+            },
+          },
+          required: ['owner', 'repo'],
+        },
+      },
     ],
   };
 });
@@ -319,6 +407,87 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           path,
           ref,
         });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_issue': {
+        const { owner, repo, issue_number } = args as any;
+        const response = await octokit.rest.issues.get({
+          owner,
+          repo,
+          issue_number,
+        });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_pull_request': {
+        const { owner, repo, pull_number } = args as any;
+        const response = await octokit.rest.pulls.get({
+          owner,
+          repo,
+          pull_number,
+        });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_commit': {
+        const { owner, repo, ref } = args as any;
+        const response = await octokit.rest.repos.getCommit({
+          owner,
+          repo,
+          ref,
+        });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_release': {
+        const { owner, repo, tag } = args as any;
+        let response;
+        
+        if (tag) {
+          response = await octokit.rest.repos.getReleaseByTag({
+            owner,
+            repo,
+            tag,
+          });
+        } else {
+          response = await octokit.rest.repos.getLatestRelease({
+            owner,
+            repo,
+          });
+        }
         
         return {
           content: [
