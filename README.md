@@ -10,6 +10,20 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 - **File Operations**: Read file contents from repositories
 - **User Information**: Access authenticated user details
 - **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
+- **Enterprise Ready**: Complete integration support for Slack, Jira, AWS, Azure, GCP, Kubernetes, and more
+
+## Enterprise Integration
+
+For comprehensive enterprise deployment with integrations for Slack, project management tools (Jira, Trello, Asana), cloud platforms (AWS, Azure, GCP), container orchestration (Docker, Kubernetes), CI/CD pipelines (Jenkins, GitHub Actions), and monitoring tools, see our [**Enterprise Integration Guide**](./ENTERPRISE-INTEGRATION.md).
+
+### Enterprise Features Include:
+- 💬 **Slack Integration** - Real-time notifications and slash commands
+- 📋 **Project Management** - Jira, Trello, Asana, Monday.com integrations
+- ☁️ **Cloud Deployments** - AWS, Azure, GCP deployment guides
+- 🐳 **Container Orchestration** - Docker and Kubernetes configurations
+- 🔄 **CI/CD Pipelines** - Jenkins and GitHub Actions workflows
+- 📊 **Monitoring** - Prometheus, Grafana, Sentry, and APM tools
+- 🔐 **Security** - Secrets management, webhook verification, audit logging
 
 ## Quick Start
 
