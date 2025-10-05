@@ -237,6 +237,19 @@ For issues and questions:
 2. Review the MCP documentation
 3. Ensure your GitHub token has correct permissions
 
+## Additional Resources
+
+### Python Chatbot Implementation Guide
+
+For developers interested in building chatbots using Python, we've created a comprehensive guide:
+
+📚 **[Python Chatbot Implementation Guide](./PYTHON-CHATBOT-GUIDE.md)** - A complete step-by-step guide covering:
+- NLTK, spaCy, Rasa, ChatterBot, and OpenAI API implementations
+- Neural network training for chatbots
+- Flask web interface development
+- Production deployment strategies
+- Testing and performance evaluation
+
 ## Related Projects
 
 - [Model Context Protocol](https://github.com/modelcontextprotocol)
