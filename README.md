@@ -14,6 +14,8 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 
 ## Enterprise Integration
 
+🚀 **New to Enterprise Integration?** Start with our [**Quick Start Guide**](./QUICK-START-ENTERPRISE.md) for a 5-minute setup!
+
 For comprehensive enterprise deployment with integrations for Slack, project management tools (Jira, Trello, Asana), cloud platforms (AWS, Azure, GCP), container orchestration (Docker, Kubernetes), CI/CD pipelines (Jenkins, GitHub Actions), and monitoring tools, see our [**Enterprise Integration Guide**](./ENTERPRISE-INTEGRATION.md).
 
 ### Enterprise Features Include:
