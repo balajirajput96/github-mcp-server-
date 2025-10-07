@@ -409,3 +409,13 @@ For developers interested in building chatbots using Python, we've created a com
 - [Model Context Protocol](https://github.com/modelcontextprotocol)
 - [Claude Desktop](https://claude.ai/desktop)
 - [GitHub REST API](https://docs.github.com/en/rest)
+
+## FastAPI ML Model API
+
+This repository also includes a FastAPI ML Model API deployment package with production-ready REST endpoints.
+
+- `GET /` - Home/status endpoint
+- `GET /health` - Health check
+- `POST /predict` - ML model prediction endpoint
+
+See [FASTAPI-DEPLOYMENT.md](FASTAPI-DEPLOYMENT.md) for complete deployment instructions and customization options.
