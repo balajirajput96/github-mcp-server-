@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that provides GitHub API integration for AI agents and assistants. This server enables AI tools like Claude to interact with GitHub repositories, issues, pull requests, and more through a standardized interface.
 
+**🆕 NEW:** This repository now also includes a complete **FastAPI ML Model API** deployment package! See [FASTAPI-DEPLOYMENT.md](FASTAPI-DEPLOYMENT.md) for details.
+
 ## Features
 
 - **Repository Management**: List, view, and access repository information
@@ -10,6 +12,7 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 - **File Operations**: Read file contents from repositories
 - **User Information**: Access authenticated user details
 - **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
+- **🆕 ML Model API**: Ready-to-deploy FastAPI application with prediction endpoints
 
 ## Quick Start
 
@@ -201,6 +204,31 @@ This server implements the Model Context Protocol (MCP) specification. All tools
 - Never commit GitHub tokens to version control
 - Use minimal required GitHub token scopes
 - Run in containerized environments when possible
+
+## FastAPI ML Model API 🆕
+
+This repository now includes a complete FastAPI ML Model API deployment package! Perfect for deploying machine learning models with a production-ready REST API.
+
+### Quick Start
+
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run the API
+uvicorn main:app --reload
+
+# Test the API
+python test.py
+```
+
+### API Endpoints
+
+- `GET /` - Home/status endpoint
+- `GET /health` - Health check
+- `POST /predict` - Make predictions with ML model
+
+For complete deployment instructions and customization options, see [FASTAPI-DEPLOYMENT.md](FASTAPI-DEPLOYMENT.md).
 
 ## Contributing
 
