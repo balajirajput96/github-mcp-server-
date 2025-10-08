@@ -2,6 +2,10 @@
 
 A Model Context Protocol (MCP) server that provides GitHub API integration for AI agents and assistants. This server enables AI tools like Claude to interact with GitHub repositories, issues, pull requests, and more through a standardized interface.
 
+> **⚠️ SECURITY WARNING:** This is a GitHub API integration server. Never commit tokens, API keys, or secrets to version control. See [SECURITY.md](./SECURITY.md) for security best practices.
+
+> **ℹ️ NOTE:** This server is designed for GitHub API operations only. For Slack workspace management, Jira automation, or other integrations, see the [examples/integrations](./examples/integrations) directory for reference implementations.
+
 ## Features
 
 - **Repository Management**: List, view, and access repository information
@@ -97,6 +101,24 @@ Add this configuration to your Claude Desktop config file:
    - `repo` - Full control of private repositories
    - `read:user` - Read access to user profile data
 4. Copy the generated token and add it to your `.env` file
+
+## What This Server Does
+
+✅ **GitHub API Operations:**
+- Repository management (list, view, search)
+- Issue tracking (list, create, read)
+- Pull request operations (list, view, review)
+- Commit and release information
+- File content access
+- GitHub user information
+
+❌ **What This Server Does NOT Do:**
+- Slack workspace management (user removal, channel management)
+- Direct Jira/Trello/Asana operations
+- Email or notification sending
+- User authentication/authorization for third-party services
+
+**For enterprise integrations** (Slack, Jira, etc.), see the [examples/integrations](./examples/integrations) directory for reference implementations that you can adapt to your needs.
 
 ## Available Tools
 
@@ -213,10 +235,23 @@ This server implements the Model Context Protocol (MCP) specification. All tools
 
 ## Security
 
-- Always use environment variables for sensitive data
-- Never commit GitHub tokens to version control
-- Use minimal required GitHub token scopes
-- Run in containerized environments when possible
+**🔒 Critical Security Practices:**
+
+- ⚠️ **NEVER commit tokens or secrets to version control**
+  - GitHub tokens (ghp_*, ghp_*, etc.)
+  - Slack tokens (xoxb-*, xoxp-*, xoxe-*, etc.)
+  - API keys, passwords, or any credentials
+- ✅ **Always use environment variables** for sensitive data (`.env` file)
+- ✅ **Use minimal required scopes** for GitHub tokens (repo, read:user)
+- ✅ **Revoke tokens immediately** if accidentally exposed
+- ✅ **Run in containerized environments** when possible
+- ✅ **Use secrets management services** in production (AWS Secrets Manager, Azure Key Vault, etc.)
+
+**📖 See [SECURITY.md](./SECURITY.md) for:**
+- Complete security best practices
+- How to report vulnerabilities
+- What to do if you exposed a token
+- Secure deployment guidelines
 
 ## Contributing
 
@@ -249,6 +284,30 @@ For developers interested in building chatbots using Python, we've created a com
 - Flask web interface development
 - Production deployment strategies
 - Testing and performance evaluation
+
+## Frequently Asked Questions
+
+### Can I use this to manage Slack workspaces?
+No, this server is specifically for GitHub API operations. For Slack integrations, see the [Slack Web API](https://api.slack.com/web) and our [example Slack integration](./examples/integrations/slack-notifications.js).
+
+### I accidentally committed a token. What should I do?
+1. **Immediately revoke the token** at its source (GitHub settings, Slack app settings, etc.)
+2. **Generate a new token** and store it in `.env` file (never in code)
+3. See [SECURITY.md](./SECURITY.md) for detailed steps
+
+### Can I integrate with Jira, Trello, or other project management tools?
+Yes! See the [examples/integrations](./examples/integrations) directory for reference implementations. These are separate from the core GitHub MCP Server.
+
+### What tokens/credentials do I need?
+- **Required:** GitHub Personal Access Token (scopes: repo, read:user)
+- **Optional:** Tokens for enterprise integrations (Slack, Jira, etc.) only if you use those examples
+
+### Is this server secure for production use?
+Yes, when following security best practices:
+- Use environment variables for secrets
+- Run in containerized environments
+- Implement proper network security
+- See [SECURITY.md](./SECURITY.md) and [DEPLOYMENT.md](./DEPLOYMENT.md) for details
 
 ## Related Projects
 
