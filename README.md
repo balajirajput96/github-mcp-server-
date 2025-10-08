@@ -213,10 +213,47 @@ This server implements the Model Context Protocol (MCP) specification. All tools
 
 ## Security
 
-- Always use environment variables for sensitive data
-- Never commit GitHub tokens to version control
-- Use minimal required GitHub token scopes
-- Run in containerized environments when possible
+🔐 **Security is our top priority!** Please read our [Security Policy](./SECURITY.md) for detailed information.
+
+### Quick Security Guidelines
+
+- ⚠️ **NEVER commit tokens or secrets to the repository**
+- ✅ Always use environment variables for sensitive data (`.env` files)
+- ✅ Ensure `.env` files are in `.gitignore` (already configured)
+- ✅ Use minimal required GitHub token scopes (`repo`, `read:user`)
+- ✅ Enable secret scanning on your repository
+- ✅ Run in containerized environments when possible
+- 🔄 Rotate tokens regularly and revoke compromised ones immediately
+
+### Secret Scanning
+
+This repository includes automated secret scanning via GitHub Actions:
+- **Gitleaks**: Detects secrets in code and git history
+- **TruffleHog**: Finds high-entropy strings and verified secrets
+- **Pattern Matching**: Checks for common token patterns (Slack, GitHub, AWS)
+
+The secret scanning workflow runs on every push and pull request to prevent accidental token leaks.
+
+### What to Do If You Accidentally Commit a Secret
+
+1. **Revoke the secret immediately** (GitHub, Slack, AWS, etc.)
+2. Generate a new secret and update your local environment
+3. Contact the repository maintainers for help cleaning git history
+4. Review our [Security Policy](./SECURITY.md) for detailed steps
+
+### Pre-commit Hook (Recommended)
+
+Install Gitleaks to catch secrets before committing:
+
+```bash
+# macOS
+brew install gitleaks
+
+# Run before committing
+gitleaks detect --source . --verbose
+```
+
+For more information, see the [Security Policy](./SECURITY.md).
 
 ## Contributing
 
