@@ -15,6 +15,24 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*
+*.env
+
+# Secrets and credentials (never commit these!)
+secrets.yaml
+secrets.yml
+*-secrets.yaml
+*-secrets.yml
+credentials.json
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+.aws/
+.azure/
+.gcp/
 
 # IDE
 .vscode/
@@ -85,6 +103,11 @@ temp/
 
 # Kubernetes secrets (never commit actual secrets)
 k8s/secrets.yaml
+
+# Secret scanning results
+.secrets.baseline
+gitleaks-report.json
+trufflehog-report.json
 
 # Backup files
 *.backup
