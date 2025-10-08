@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Pre-commit hook to check for exposed secrets
+# 
+# To install this hook:
+#   cp scripts/pre-commit.sample .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# To bypass this check (not recommended):
+#   git commit --no-verify
+#
+
+# Get the list of staged files
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|json|md|yml|yaml|env)$')
+
+if [ -z "$FILES" ]; then
+  # No relevant files to check
+  exit 0
+fi
+
+echo "🔍 Checking for exposed secrets..."
+
+# Check if the security validator is built
+if [ ! -f "dist/security-validator.js" ]; then
+  echo "⚠️  Security validator not found. Building..."
+  npm run build > /dev/null 2>&1
+  
+  if [ $? -ne 0 ]; then
+    echo "❌ Build failed. Please run 'npm run build' manually."
+    exit 1
+  fi
+fi
+
+# Run the secret checker on staged files
+node scripts/check-secrets.js $FILES
+
+# Exit with the same status as the checker
+exit $?

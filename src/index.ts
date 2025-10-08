@@ -10,6 +10,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { Octokit } from '@octokit/rest';
 import * as dotenv from 'dotenv';
+import { validateUserInput, sanitizeOutput } from './security-validator.js';
 
 // Load environment variables
 dotenv.config();
@@ -362,6 +363,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'create_issue': {
         const { owner, repo, title, body, labels } = args as any;
+        
+        // Validate user input for sensitive data
+        validateUserInput(title, 'title');
+        validateUserInput(body, 'body');
+        validateUserInput(labels, 'labels');
+        
         const response = await octokit.rest.issues.create({
           owner,
           repo,
@@ -374,7 +381,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -412,7 +419,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -430,7 +437,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
