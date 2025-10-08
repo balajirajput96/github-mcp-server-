@@ -1,0 +1,68 @@
+title = "Gitleaks Configuration for GitHub MCP Server"
+
+[extend]
+# Extend default config
+useDefault = true
+
+[[rules]]
+id = "slack-token"
+description = "Slack Token"
+regex = '''xox[baprs]-[0-9]{10,13}-[0-9]{10,13}-[a-zA-Z0-9]{24,32}'''
+tags = ["slack", "token"]
+
+[[rules]]
+id = "slack-webhook"
+description = "Slack Webhook"
+regex = '''https://hooks\.slack\.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8,12}/[a-zA-Z0-9_]{24}'''
+tags = ["slack", "webhook"]
+
+[[rules]]
+id = "slack-xoxe-token"
+description = "Slack Extended Token (xoxe)"
+regex = '''xoxe\.xoxp-1-[a-zA-Z0-9-]+'''
+tags = ["slack", "token", "xoxe"]
+
+[[rules]]
+id = "slack-xoxe-short-token"
+description = "Slack Extended Short Token"
+regex = '''xoxe-1-[a-zA-Z0-9-]+'''
+tags = ["slack", "token", "xoxe"]
+
+[[rules]]
+id = "github-pat"
+description = "GitHub Personal Access Token"
+regex = '''gh[pousrt]_[A-Za-z0-9_]{36,255}'''
+tags = ["github", "token"]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key ID"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+tags = ["aws", "key"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey|api[_-]?secret)[\s]*[:=][\s]*['\"]?[a-zA-Z0-9_\-]{20,}['\"]?'''
+tags = ["api", "key", "generic"]
+[rules.allowlist]
+paths = [
+    '''\.env\.example$''',
+    '''SECURITY\.md$''',
+    '''README\.md$''',
+    '''\.github/workflows/.*\.yml$''',
+]
+
+[[rules]]
+id = "private-key"
+description = "Private Key"
+regex = '''-----BEGIN (RSA|DSA|EC|OPENSSH|PGP) PRIVATE KEY-----'''
+tags = ["key", "private"]
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+    '''\.env\.example$''',
+    '''.*\.md$''',
+    '''\.gitleaks\.toml$''',
+]

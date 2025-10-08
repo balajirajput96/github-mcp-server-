@@ -1,0 +1,12 @@
+# Gitleaks ignore file
+# Add patterns or file paths that should be ignored by gitleaks
+
+# Example patterns in documentation
+SECURITY.md:*
+README.md:*
+*.example
+.env.example
+
+# Test fixtures (if any)
+test/fixtures/**
+tests/fixtures/**
