@@ -10,6 +10,7 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 - **File Operations**: Read file contents from repositories
 - **User Information**: Access authenticated user details
 - **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
+- **Security**: Built-in validation to detect and prevent token/credential exposure
 - **Enterprise Ready**: Complete integration support for Slack, Jira, AWS, Azure, GCP, Kubernetes, and more
 
 ## Enterprise Integration
@@ -213,10 +214,27 @@ This server implements the Model Context Protocol (MCP) specification. All tools
 
 ## Security
 
+This server includes built-in security validation to protect against accidental token exposure:
+
+- **Automatic Input Validation**: Detects and rejects sensitive data in user input (GitHub tokens, Slack tokens, AWS credentials, API keys, etc.)
+- **Output Sanitization**: Automatically redacts sensitive patterns in responses
+- **Smart Placeholder Detection**: Distinguishes between real credentials and placeholder values
+
+For detailed security information, including:
+- Complete list of detected patterns
+- Best practices for token management
+- Incident response procedures
+- Testing security features
+
+See our comprehensive [**Security Policy**](./SECURITY.md).
+
+### Quick Security Tips
+
 - Always use environment variables for sensitive data
 - Never commit GitHub tokens to version control
 - Use minimal required GitHub token scopes
 - Run in containerized environments when possible
+- Immediately revoke any accidentally exposed tokens
 
 ## Contributing
 
