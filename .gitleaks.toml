@@ -43,7 +43,7 @@ tags = ["aws", "key"]
 [[rules]]
 id = "generic-api-key"
 description = "Generic API Key"
-regex = '''(?i)(api[_-]?key|apikey|api[_-]?secret)[\s]*[:=][\s]*['\"]?[a-zA-Z0-9_\-]{20,}['\"]?'''
+regex = '''(api[_-]?key|apikey|api[_-]?secret)[\s]*[:=][\s]*['\"]?[a-zA-Z0-9_\-]{20,}['\"]?'''
 tags = ["api", "key", "generic"]
 [rules.allowlist]
 paths = [
