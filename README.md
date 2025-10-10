@@ -238,7 +238,7 @@ This server implements the Model Context Protocol (MCP) specification. All tools
 **🔒 Critical Security Practices:**
 
 - ⚠️ **NEVER commit tokens or secrets to version control**
-  - GitHub tokens (ghp_*, ghp_*, etc.)
+  - GitHub tokens (ghp_*, gho_*, ghu_*, ghr_*, etc.)
   - Slack tokens (xoxb-*, xoxp-*, xoxe-*, etc.)
   - API keys, passwords, or any credentials
 - ✅ **Always use environment variables** for sensitive data (`.env` file)
