@@ -63,6 +63,7 @@ tags = ["key", "private"]
 description = "Global allowlist"
 paths = [
     '''\.env\.example$''',
-    '''.*\.md$''',
+    '''SECURITY\.md$''',
+    '''README\.md$''',
     '''\.gitleaks\.toml$''',
 ]
