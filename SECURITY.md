@@ -75,7 +75,7 @@ brew install gitleaks
 
 # Linux
 wget https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks-linux-amd64
-chmod +x gitleaks-linux-amd64
+chmod 755 gitleaks-linux-amd64
 sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
 
 # Run gitleaks before committing
