@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: github-mcp-server
-        image: github-mcp-server:latest
+        image: github-mcp-server:v1.2.3
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
