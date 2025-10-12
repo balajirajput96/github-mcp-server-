@@ -3,7 +3,7 @@
 # Repository Health Check Script
 # Automatically checks and fixes common issues
 
-set -e
+# Note: Not using 'set -e' to continue checking all items even if some fail
 
 echo "🏥 Repository Health Check"
 echo "=========================="
