@@ -3,7 +3,7 @@
 # Automatic Issue Detection and Fix Script
 # Detects and fixes common issues automatically
 
-set -e
+# Note: Not using 'set -e' to continue checking all items even if some fail
 
 echo "🔧 Auto-Fix: Issue Detection & Resolution"
 echo "=========================================="

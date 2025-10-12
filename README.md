@@ -8,20 +8,29 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 
 We've added complete automation for FREE tier deployments. Deploy to Vercel, Netlify, Render, or Railway without spending a penny!
 
+- ✅ **One-Click Setup** - Complete setup in one command
 - ✅ **Automated Setup Script** - Configure everything in 5 minutes
 - ✅ **Health Check System** - Verify your setup automatically  
 - ✅ **Auto-Deploy Script** - Deploy to FREE platforms with one command
+- ✅ **Auto-Fix Script** - Automatically fix common issues
 - ✅ **GitHub Actions** - Automated CI/CD included
 - ✅ **Monthly Cost**: **$0.00** - Everything uses free tiers!
 
-**Quick Start (FREE):**
+**One-Click Setup:**
 ```bash
-./scripts/free-tier-setup.sh  # Interactive setup
+./setup.sh  # Complete automated setup + deployment
+```
+
+**Or step-by-step:**
+```bash
+./scripts/auto-fix.sh          # Fix any issues
+./scripts/free-tier-setup.sh   # Interactive setup
 ./scripts/health-check.sh      # Verify everything
 ./scripts/auto-deploy.sh       # Deploy automatically
 ```
 
 📖 See [**FREE-TIER-GUIDE.md**](./FREE-TIER-GUIDE.md) for complete details!
+📖 See [**AUTOMATION-SUMMARY.md**](./AUTOMATION-SUMMARY.md) for automation details!
 
 ## Features
 
@@ -52,14 +61,39 @@ For comprehensive enterprise deployment with integrations for Slack, project man
 
 ## Quick Start
 
-### 🚀 Option 1: Automated FREE Setup (Recommended)
+### 🚀 Option 1: One-Click Setup (Recommended)
 
-**Get up and running in 5 minutes with zero cost!**
+**Complete automated setup and deployment in ONE command!**
 
 ```bash
 # Clone the repository
 git clone https://github.com/balajirajput96/github-mcp-server-.git
 cd github-mcp-server-
+
+# Run one-click setup (fixes issues, configures, deploys)
+./setup.sh
+```
+
+**That's it!** The script will:
+- ✅ Auto-fix any issues
+- ✅ Run health checks
+- ✅ Guide you through FREE service setup
+- ✅ Install all dependencies automatically
+- ✅ Build and test the project
+- ✅ Create deployment configs
+- ✅ Deploy to your chosen FREE platform
+
+### Option 2: Step-by-Step Setup
+
+**More control over each step:**
+
+```bash
+# Clone the repository
+git clone https://github.com/balajirajput96/github-mcp-server-.git
+cd github-mcp-server-
+
+# Fix any issues automatically
+./scripts/auto-fix.sh
 
 # Run automated FREE tier setup
 ./scripts/free-tier-setup.sh
@@ -71,14 +105,7 @@ cd github-mcp-server-
 ./scripts/auto-deploy.sh
 ```
 
-**That's it!** The scripts will:
-- ✅ Guide you through FREE service setup
-- ✅ Install all dependencies automatically
-- ✅ Build and test the project
-- ✅ Create deployment configs
-- ✅ Deploy to your chosen FREE platform
-
-### Option 2: Manual Setup
+### Option 3: Manual Setup
 
 ### Prerequisites
 
