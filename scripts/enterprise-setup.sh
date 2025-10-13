@@ -53,7 +53,28 @@ if [[ "$configure_slack" =~ ^[Yy]$ ]]; then
 fi
 
 echo ""
-echo -e "${YELLOW}Step 3: Cloud Platform Configuration (optional)${NC}"
+echo -e "${YELLOW}Step 3: Communication Tools (optional)${NC}"
+echo "--------------------------------------"
+read -p "$(echo -e ${BLUE}Configure Microsoft Teams?${NC} [y/N]: )" configure_teams
+
+if [[ "$configure_teams" =~ ^[Yy]$ ]]; then
+    prompt_with_default "Teams Webhook URL" "" TEAMS_WEBHOOK_URL
+fi
+
+echo ""
+read -p "$(echo -e ${BLUE}Configure Email Notifications?${NC} [y/N]: )" configure_email
+
+if [[ "$configure_email" =~ ^[Yy]$ ]]; then
+    prompt_with_default "SMTP Host" "smtp.gmail.com" SMTP_HOST
+    prompt_with_default "SMTP Port" "587" SMTP_PORT
+    prompt_with_default "SMTP User" "" SMTP_USER
+    prompt_secure "SMTP Password" SMTP_PASS
+    prompt_with_default "From Email" "deployments@company.com" SMTP_FROM_EMAIL
+    prompt_with_default "To Emails (comma-separated)" "" SMTP_TO_EMAILS
+fi
+
+echo ""
+echo -e "${YELLOW}Step 4: Cloud Platform Configuration (optional)${NC}"
 echo "------------------------------------------------"
 read -p "$(echo -e ${BLUE}Configure AWS?${NC} [y/N]: )" configure_aws
 
@@ -74,8 +95,8 @@ if [[ "$configure_azure" =~ ^[Yy]$ ]]; then
 fi
 
 echo ""
-echo -e "${YELLOW}Step 4: Project Management Tools (optional)${NC}"
-echo "--------------------------------------------"
+echo -e "${YELLOW}Step 5: Project Management & Incident Tools (optional)${NC}"
+echo "--------------------------------------------------------"
 read -p "$(echo -e ${BLUE}Configure Jira?${NC} [y/N]: )" configure_jira
 
 if [[ "$configure_jira" =~ ^[Yy]$ ]]; then
@@ -93,7 +114,16 @@ if [[ "$configure_trello" =~ ^[Yy]$ ]]; then
 fi
 
 echo ""
-echo -e "${YELLOW}Step 5: Monitoring Tools (optional)${NC}"
+read -p "$(echo -e ${BLUE}Configure PagerDuty?${NC} [y/N]: )" configure_pagerduty
+
+if [[ "$configure_pagerduty" =~ ^[Yy]$ ]]; then
+    prompt_secure "PagerDuty API Key" PAGERDUTY_API_KEY
+    prompt_secure "PagerDuty Service Key" PAGERDUTY_SERVICE_KEY
+    prompt_with_default "PagerDuty From Email" "" PAGERDUTY_FROM_EMAIL
+fi
+
+echo ""
+echo -e "${YELLOW}Step 6: Monitoring Tools (optional)${NC}"
 echo "------------------------------------"
 read -p "$(echo -e ${BLUE}Configure Sentry for error tracking?${NC} [y/N]: )" configure_sentry
 
@@ -110,7 +140,7 @@ fi
 
 # Create .env file
 echo ""
-echo -e "${YELLOW}Step 6: Generating Configuration${NC}"
+echo -e "${YELLOW}Step 7: Generating Configuration${NC}"
 echo "---------------------------------"
 
 cat > .env << EOF
@@ -129,6 +159,27 @@ if [[ "$configure_slack" =~ ^[Yy]$ ]]; then
 SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 SLACK_SIGNING_SECRET=${SLACK_SIGNING_SECRET}
 SLACK_CHANNEL_ID=${SLACK_CHANNEL_ID}
+EOF
+fi
+
+if [[ "$configure_teams" =~ ^[Yy]$ ]]; then
+    cat >> .env << EOF
+
+# Microsoft Teams Configuration
+TEAMS_WEBHOOK_URL=${TEAMS_WEBHOOK_URL}
+EOF
+fi
+
+if [[ "$configure_email" =~ ^[Yy]$ ]]; then
+    cat >> .env << EOF
+
+# Email Configuration
+SMTP_HOST=${SMTP_HOST}
+SMTP_PORT=${SMTP_PORT}
+SMTP_USER=${SMTP_USER}
+SMTP_PASS=${SMTP_PASS}
+SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL}
+SMTP_TO_EMAILS=${SMTP_TO_EMAILS}
 EOF
 fi
 
@@ -172,6 +223,16 @@ TRELLO_TOKEN=${TRELLO_TOKEN}
 EOF
 fi
 
+if [[ "$configure_pagerduty" =~ ^[Yy]$ ]]; then
+    cat >> .env << EOF
+
+# PagerDuty Configuration
+PAGERDUTY_API_KEY=${PAGERDUTY_API_KEY}
+PAGERDUTY_SERVICE_KEY=${PAGERDUTY_SERVICE_KEY}
+PAGERDUTY_FROM_EMAIL=${PAGERDUTY_FROM_EMAIL}
+EOF
+fi
+
 if [[ "$configure_sentry" =~ ^[Yy]$ ]]; then
     cat >> .env << EOF
 
@@ -201,7 +262,7 @@ echo ""
 
 # Install dependencies if needed
 if [ ! -d "node_modules" ]; then
-    echo -e "${YELLOW}Step 7: Installing Dependencies${NC}"
+    echo -e "${YELLOW}Step 8: Installing Dependencies${NC}"
     echo "--------------------------------"
     npm install
     echo -e "${GREEN}✅ Dependencies installed${NC}"
@@ -209,7 +270,7 @@ if [ ! -d "node_modules" ]; then
 fi
 
 # Build the project
-echo -e "${YELLOW}Step 8: Building Project${NC}"
+echo -e "${YELLOW}Step 9: Building Project${NC}"
 echo "------------------------"
 npm run build
 echo -e "${GREEN}✅ Project built successfully${NC}"
@@ -224,10 +285,13 @@ echo ""
 echo "Configured integrations:"
 echo "  ✓ GitHub"
 [[ "$configure_slack" =~ ^[Yy]$ ]] && echo "  ✓ Slack"
+[[ "$configure_teams" =~ ^[Yy]$ ]] && echo "  ✓ Microsoft Teams"
+[[ "$configure_email" =~ ^[Yy]$ ]] && echo "  ✓ Email Notifications"
 [[ "$configure_aws" =~ ^[Yy]$ ]] && echo "  ✓ AWS"
 [[ "$configure_azure" =~ ^[Yy]$ ]] && echo "  ✓ Azure"
 [[ "$configure_jira" =~ ^[Yy]$ ]] && echo "  ✓ Jira"
 [[ "$configure_trello" =~ ^[Yy]$ ]] && echo "  ✓ Trello"
+[[ "$configure_pagerduty" =~ ^[Yy]$ ]] && echo "  ✓ PagerDuty"
 [[ "$configure_sentry" =~ ^[Yy]$ ]] && echo "  ✓ Sentry"
 [[ "$configure_newrelic" =~ ^[Yy]$ ]] && echo "  ✓ New Relic"
 echo ""
