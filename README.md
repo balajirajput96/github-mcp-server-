@@ -150,6 +150,22 @@ For debugging and testing:
 npm run inspector
 ```
 
+### Testing Integrations
+Test all enterprise integrations:
+```bash
+# Run integration tests
+npm run test:integrations
+
+# Test Slack integration
+npm run example:slack
+
+# Test Jira integration
+npm run example:jira
+
+# Test complete deployment workflow
+npm run example:workflow
+```
+
 ## Docker Deployment
 
 ### Build Image
