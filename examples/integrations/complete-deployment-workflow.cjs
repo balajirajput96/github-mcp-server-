@@ -1,7 +1,7 @@
 /**
  * Complete Deployment Workflow Example
  * Demonstrates full integration of Slack and Jira for deployment automation
- * 
+ *
  * This example shows how to:
  * 1. Notify team via Slack when deployment starts
  * 2. Create a Jira issue to track the deployment
@@ -20,7 +20,7 @@ require('dotenv').config();
  */
 async function performDeployment(version, environment) {
   console.log(`🚀 Starting deployment of ${version} to ${environment}...`);
-  
+
   // Simulate deployment steps
   const steps = [
     'Building application...',
@@ -135,7 +135,7 @@ async function deployWithIntegrations(version, environment, deployer) {
   } catch (error) {
     // Calculate duration even on failure
     const duration = `${Math.round((Date.now() - startTime) / 1000)}s`;
-    
+
     console.error('\n❌ Deployment failed:', error.message);
 
     // Notify failure via Slack

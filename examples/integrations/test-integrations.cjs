@@ -30,7 +30,7 @@ function section(title) {
 
 async function testDependencies() {
   section('Testing Dependencies');
-  
+
   const dependencies = [
     { name: '@slack/web-api', required: false },
     { name: 'axios', required: false },
@@ -79,7 +79,7 @@ async function testEnvironmentVariables() {
   for (const envVar of envVars) {
     if (process.env[envVar.name]) {
       log(`  ✓ ${envVar.name} is set`, colors.green);
-      
+
       // Track integration configuration
       if (envVar.name.startsWith('SLACK_')) configured.slack = true;
       if (envVar.name.startsWith('JIRA_')) configured.jira = true;
@@ -172,7 +172,7 @@ async function generateReport(results) {
   console.log('\nResults:');
   const passed = Object.values(results).filter(r => r === true).length;
   const total = Object.keys(results).length;
-  
+
   log(`  Passed: ${passed}/${total}`, passed === total ? colors.green : colors.yellow);
 
   if (results.dependencies && results.envVarsRequired) {
@@ -182,7 +182,7 @@ async function generateReport(results) {
   }
 
   console.log('\nNext Steps:');
-  
+
   if (!results.envVarsRequired) {
     log('  1. Set GITHUB_TOKEN in your .env file', colors.yellow);
   }
