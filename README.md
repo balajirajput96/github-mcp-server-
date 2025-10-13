@@ -257,6 +257,19 @@ For issues and questions:
 
 ## Additional Resources
 
+### Microsoft 365 Integration Guide
+
+For organizations using Microsoft 365, we've created a comprehensive integration guide:
+
+📚 **[Microsoft 365 Integration Guide](./M365-INTEGRATION-GUIDE.md)** - Complete guide covering:
+- Microsoft Teams notifications with adaptive cards
+- Outlook/Exchange email integration
+- Microsoft Graph API usage
+- Power Automate workflows
+- Azure Active Directory authentication
+- SharePoint and OneDrive integration
+- Complete M365 deployment workflow examples
+
 ### Python Chatbot Implementation Guide
 
 For developers interested in building chatbots using Python, we've created a comprehensive guide:
