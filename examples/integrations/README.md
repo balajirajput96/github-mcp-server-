@@ -211,3 +211,13 @@ node jira-automation.js
 - [Enterprise Integration Guide](../../ENTERPRISE-INTEGRATION.md)
 - [Deployment Guide](../../DEPLOYMENT.md)
 - [Main README](../../README.md)
+
+## Additional Integrations
+
+The enterprise examples also include Microsoft Teams, email notifications, and PagerDuty. Configure only the corresponding environment variables in `.env`; never commit real credentials.
+
+```bash
+node teams-notifications.js
+node email-notifications.js
+node pagerduty-integration.js
+```
