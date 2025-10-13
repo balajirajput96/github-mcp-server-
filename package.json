@@ -24,7 +24,12 @@
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
     "clean": "rm -rf dist",
     "prepare": "npm run build",
-    "check-secrets": "node scripts/check-secrets.js"
+    "check-secrets": "node scripts/check-secrets.js",
+    "test:integrations": "node examples/integrations/test-integrations.cjs",
+    "example:slack": "node examples/integrations/slack-notifications.cjs",
+    "example:jira": "node examples/integrations/jira-automation.cjs",
+    "example:workflow": "node examples/integrations/complete-deployment-workflow.cjs",
+    "setup:enterprise": "bash scripts/enterprise-setup.sh"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
@@ -34,6 +39,10 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
+  },
+  "optionalDependencies": {
+    "@slack/web-api": "^7.0.0",
+    "axios": "^1.6.0"
   },
   "engines": {
     "node": ">=18"
