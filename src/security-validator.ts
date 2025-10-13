@@ -111,6 +111,8 @@ function isPlaceholder(value: string): boolean {
     /sample/i,
     /user@example\.com/i,
     /test@test\.com/i,
+    /@test\.com$/i,
+    /@example\./i,
     /no-?reply@/i,
   ];
   

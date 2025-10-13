@@ -38,7 +38,8 @@ The security validator can distinguish between real credentials and placeholder 
 - `example_token`
 - `test_token`
 - Strings containing `xxx` or `***`
-- `user@example.com`, `test@test.com`
+- `user@example.com`, any `@example.*` addresses
+- `@test.com` addresses
 - `no-reply@...` addresses
 
 ## Detected Patterns
