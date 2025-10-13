@@ -174,6 +174,7 @@ npm start
 ## 📚 Documentation Quick Links
 
 - **Full Enterprise Guide**: [ENTERPRISE-INTEGRATION.md](./ENTERPRISE-INTEGRATION.md)
+- **Microsoft 365 Integration**: [M365-INTEGRATION-GUIDE.md](./M365-INTEGRATION-GUIDE.md)
 - **Deployment Options**: [DEPLOYMENT.md](./DEPLOYMENT.md)
 - **Kubernetes Setup**: [k8s/README.md](./k8s/README.md)
 - **Integration Examples**: [examples/integrations/README.md](./examples/integrations/README.md)
