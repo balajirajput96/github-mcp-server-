@@ -17,6 +17,8 @@ The server automatically validates user-provided input to detect sensitive patte
 - **Bearer Tokens**: OAuth Bearer tokens
 - **Private Keys**: SSH and cryptographic private keys
 - **Google OAuth Tokens**: Google OAuth access tokens
+- **Email Addresses**: PII and credential identifiers
+- **Passwords**: Password strings with contextual keywords
 - **Long Alphanumeric Strings**: Potential tokens that don't match specific patterns
 
 ### 2. Output Sanitization
@@ -36,6 +38,9 @@ The security validator can distinguish between real credentials and placeholder 
 - `example_token`
 - `test_token`
 - Strings containing `xxx` or `***`
+- `user@example.com`, any `@example.*` addresses
+- `@test.com` addresses
+- `no-reply@...` addresses
 
 ## Detected Patterns
 
@@ -70,6 +75,9 @@ api_key=...                          - API Keys
 secret_key=...                       - Secret Keys
 bearer [token]                       - Bearer Tokens
 -----BEGIN PRIVATE KEY-----          - Private Keys
+email@domain.com                     - Email Addresses
+password: [string]                   - Password with keyword
+[string] ye password hai             - Password with contextual keywords
 ```
 
 ## Usage Examples
