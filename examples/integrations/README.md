@@ -78,12 +78,109 @@ await jira.updateIssue(
 );
 ```
 
+### 3. Microsoft Teams Notifications (`teams-notifications.js`)
+
+Sends deployment notifications to Microsoft Teams channels via Incoming Webhooks.
+
+**Features:**
+- Deployment started notifications
+- Success/failure notifications with rich cards
+- Pull request notifications
+- Custom formatted messages with actions
+
+**Usage:**
+```javascript
+const TeamsNotifier = require('./teams-notifications');
+
+const notifier = new TeamsNotifier(process.env.TEAMS_WEBHOOK_URL);
+
+// Notify deployment started
+await notifier.notifyDeploymentStarted('production', 'v1.2.3', 'john.doe');
+
+// Notify success
+await notifier.notifyDeploymentSuccess('production', 'v1.2.3', '3m 45s', 'john.doe');
+
+// Notify failure
+await notifier.notifyDeploymentFailure('production', 'v1.2.3', error.message, 'john.doe');
+
+// Notify PR opened
+await notifier.notifyPullRequest('opened', 42, 'Add new feature', 'john.doe', 'https://github.com/user/repo');
+```
+
+### 4. Email Notifications (`email-notifications.js`)
+
+Sends deployment notifications via email using nodemailer with HTML formatting.
+
+**Features:**
+- Deployment lifecycle notifications
+- Pull request notifications
+- Custom HTML-formatted emails
+- Support for multiple recipients
+
+**Usage:**
+```javascript
+const EmailNotifier = require('./email-notifications');
+
+const notifier = new EmailNotifier({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  user: process.env.SMTP_USER,
+  pass: process.env.SMTP_PASS,
+  fromEmail: 'deployments@company.com',
+  toEmails: ['team@company.com', 'stakeholders@company.com']
+});
+
+// Notify deployment
+await notifier.notifyDeploymentStarted('production', 'v1.2.3', 'john.doe');
+await notifier.notifyDeploymentSuccess('production', 'v1.2.3', '3m 45s', 'john.doe');
+
+// Send custom notification
+await notifier.sendCustomNotification('Alert', '<h1>Custom message</h1>', true);
+```
+
+### 5. PagerDuty Integration (`pagerduty-integration.js`)
+
+Creates incidents and alerts for deployment failures and system issues.
+
+**Features:**
+- Incident creation and management
+- Event triggering via Events API v2
+- Incident acknowledgment and resolution
+- Service monitoring alerts
+- Custom incident notes
+
+**Usage:**
+```javascript
+const PagerDutyIntegration = require('./pagerduty-integration');
+
+const pagerduty = new PagerDutyIntegration(
+  process.env.PAGERDUTY_API_KEY,
+  process.env.PAGERDUTY_SERVICE_KEY,
+  process.env.PAGERDUTY_FROM_EMAIL
+);
+
+// Trigger deployment failure incident
+const incident = await pagerduty.triggerDeploymentFailure(
+  'production',
+  'v1.2.3',
+  'Database connection timeout',
+  'deploy-bot'
+);
+
+// Add note to incident
+await pagerduty.addIncidentNote(incident.id, 'Investigating the issue');
+
+// Resolve incident
+await pagerduty.resolveIncident(incident.id, 'Issue fixed by rolling back to v1.2.2');
+```
+
 ## Installation
 
 These examples require additional dependencies:
 
 ```bash
-npm install @slack/web-api axios
+npm install @slack/web-api axios nodemailer
 ```
 
 ## Environment Variables
@@ -99,6 +196,22 @@ SLACK_CHANNEL_ID=C0123456789
 JIRA_URL=https://your-company.atlassian.net
 JIRA_EMAIL=your-email@company.com
 JIRA_API_TOKEN=your-api-token
+
+# Microsoft Teams
+TEAMS_WEBHOOK_URL=https://outlook.office.com/webhook/your-webhook-url
+
+# Email (SMTP)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_FROM_EMAIL=deployments@company.com
+SMTP_TO_EMAILS=team@company.com,stakeholders@company.com
+
+# PagerDuty
+PAGERDUTY_API_KEY=your-api-key
+PAGERDUTY_SERVICE_KEY=your-service-key
+PAGERDUTY_FROM_EMAIL=your-email@company.com
 ```
 
 ## Integration Workflow Example
@@ -107,13 +220,28 @@ Here's a complete example that combines multiple integrations:
 
 ```javascript
 const SlackNotifier = require('./slack-notifications');
+const TeamsNotifier = require('./teams-notifications');
+const EmailNotifier = require('./email-notifications');
 const JiraIntegration = require('./jira-automation');
+const PagerDutyIntegration = require('./pagerduty-integration');
 
 async function deployWithIntegrations(version, environment) {
+  // Initialize all integrations
   const slack = new SlackNotifier(
     process.env.SLACK_BOT_TOKEN,
     process.env.SLACK_CHANNEL_ID
   );
+  
+  const teams = new TeamsNotifier(process.env.TEAMS_WEBHOOK_URL);
+  
+  const email = new EmailNotifier({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+    fromEmail: process.env.SMTP_FROM_EMAIL,
+    toEmails: process.env.SMTP_TO_EMAILS.split(',')
+  });
   
   const jira = new JiraIntegration(
     process.env.JIRA_URL,
@@ -121,10 +249,20 @@ async function deployWithIntegrations(version, environment) {
     process.env.JIRA_API_TOKEN,
     'PROJ'
   );
+  
+  const pagerduty = new PagerDutyIntegration(
+    process.env.PAGERDUTY_API_KEY,
+    process.env.PAGERDUTY_SERVICE_KEY,
+    process.env.PAGERDUTY_FROM_EMAIL
+  );
 
   try {
-    // 1. Notify deployment started
-    await slack.notifyDeploymentStarted(environment, version, 'deploy-bot');
+    // 1. Notify deployment started across all channels
+    await Promise.all([
+      slack.notifyDeploymentStarted(environment, version, 'deploy-bot'),
+      teams.notifyDeploymentStarted(environment, version, 'deploy-bot'),
+      email.notifyDeploymentStarted(environment, version, 'deploy-bot')
+    ]);
     
     // 2. Create Jira tracking issue
     const issue = await jira.createDeploymentIssue(
@@ -145,29 +283,38 @@ async function deployWithIntegrations(version, environment) {
       'Done'
     );
     
-    // 5. Notify success
-    await slack.notifyDeploymentSuccess(
-      environment,
-      version,
-      duration,
-      'deploy-bot'
-    );
+    // 5. Notify success across all channels
+    await Promise.all([
+      slack.notifyDeploymentSuccess(environment, version, duration, 'deploy-bot'),
+      teams.notifyDeploymentSuccess(environment, version, duration, 'deploy-bot'),
+      email.notifyDeploymentSuccess(environment, version, duration, 'deploy-bot')
+    ]);
     
   } catch (error) {
-    // Handle failure
-    await slack.notifyDeploymentFailure(
-      environment,
-      version,
-      error.message,
-      'deploy-bot'
-    );
+    // Handle failure - notify all systems
+    await Promise.all([
+      slack.notifyDeploymentFailure(environment, version, error.message, 'deploy-bot'),
+      teams.notifyDeploymentFailure(environment, version, error.message, 'deploy-bot'),
+      email.notifyDeploymentFailure(environment, version, error.stack, 'deploy-bot')
+    ]);
     
+    // Create Jira bug
     await jira.createBugFromFailure(
       'Deployment failed',
       error.stack,
       version,
       environment
     );
+    
+    // Create PagerDuty incident for critical environments
+    if (environment === 'production') {
+      await pagerduty.triggerDeploymentFailure(
+        environment,
+        version,
+        error.message,
+        'deploy-bot'
+      );
+    }
     
     throw error;
   }
@@ -179,11 +326,11 @@ async function deployWithIntegrations(version, environment) {
 Want to add more integrations? Here are some suggestions:
 
 1. **Trello** - Card automation for deployment tracking
-2. **Microsoft Teams** - Deployment notifications
-3. **PagerDuty** - Incident creation on failures
-4. **DataDog** - Deployment markers
-5. **New Relic** - Deployment annotations
-6. **Email** - Stakeholder notifications
+2. **DataDog** - Deployment markers and APM
+3. **New Relic** - Deployment annotations and monitoring
+4. **Discord** - Community deployment notifications
+5. **Telegram** - Mobile deployment alerts
+6. **Webhooks** - Custom integration endpoints
 
 ## Contributing
 
@@ -204,6 +351,15 @@ node slack-notifications.js
 
 # Test Jira automation
 node jira-automation.js
+
+# Test Microsoft Teams notifications
+node teams-notifications.js
+
+# Test Email notifications
+node email-notifications.js
+
+# Test PagerDuty integration
+node pagerduty-integration.js
 ```
 
 ## See Also
