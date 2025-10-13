@@ -4,7 +4,7 @@ This directory contains example code for integrating the GitHub MCP Server with 
 
 ## Available Examples
 
-### 1. Slack Notifications (`slack-notifications.js`)
+### 1. Slack Notifications (`slack-notifications.cjs`)
 
 Demonstrates how to send deployment notifications to Slack channels.
 
@@ -16,7 +16,7 @@ Demonstrates how to send deployment notifications to Slack channels.
 
 **Usage:**
 ```javascript
-const SlackNotifier = require('./slack-notifications');
+const SlackNotifier = require('./slack-notifications.cjs');
 
 const notifier = new SlackNotifier(
   process.env.SLACK_BOT_TOKEN,
@@ -33,7 +33,7 @@ await notifier.notifyDeploymentSuccess('production', 'v1.2.3', '3m 45s', 'john.d
 await notifier.notifyDeploymentFailure('production', 'v1.2.3', error.message, 'john.doe');
 ```
 
-### 2. Jira Automation (`jira-automation.js`)
+### 2. Jira Automation (`jira-automation.cjs`)
 
 Automates Jira issue creation and updates based on deployment events.
 
@@ -46,7 +46,7 @@ Automates Jira issue creation and updates based on deployment events.
 
 **Usage:**
 ```javascript
-const JiraIntegration = require('./jira-automation');
+const JiraIntegration = require('./jira-automation.cjs');
 
 const jira = new JiraIntegration(
   process.env.JIRA_URL,
@@ -78,13 +78,35 @@ await jira.updateIssue(
 );
 ```
 
+### 3. Complete Deployment Workflow (`complete-deployment-workflow.cjs`)
+
+A comprehensive example that demonstrates the entire deployment workflow with full Slack and Jira integration.
+
+**Features:**
+- Complete deployment automation
+- Slack notifications at each step
+- Jira issue tracking
+- Error handling and bug reporting
+- Graceful handling of missing integrations
+
+**Usage:**
+```bash
+# Set environment variables in .env file
+npm run example:workflow
+
+# Or with custom parameters
+DEPLOYMENT_VERSION=v2.0.0 DEPLOYMENT_ENVIRONMENT=production npm run example:workflow
+```
+
 ## Installation
 
-These examples require additional dependencies:
+These examples require additional dependencies (already included as optional dependencies):
 
 ```bash
-npm install @slack/web-api axios
+npm install
 ```
+
+The required dependencies `@slack/web-api` and `axios` are automatically installed as optional dependencies.
 
 ## Environment Variables
 
@@ -106,8 +128,8 @@ JIRA_API_TOKEN=your-api-token
 Here's a complete example that combines multiple integrations:
 
 ```javascript
-const SlackNotifier = require('./slack-notifications');
-const JiraIntegration = require('./jira-automation');
+const SlackNotifier = require('./slack-notifications.cjs');
+const JiraIntegration = require('./jira-automation.cjs');
 
 async function deployWithIntegrations(version, environment) {
   const slack = new SlackNotifier(
@@ -199,11 +221,17 @@ To add a new integration example:
 Test your integrations:
 
 ```bash
+# Run integration tests
+npm run test:integrations
+
 # Test Slack notifications
-node slack-notifications.js
+npm run example:slack
 
 # Test Jira automation
-node jira-automation.js
+npm run example:jira
+
+# Test complete deployment workflow
+npm run example:workflow
 ```
 
 ## See Also
