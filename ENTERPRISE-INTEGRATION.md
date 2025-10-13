@@ -173,6 +173,247 @@ app.command('/deploy', async ({ command, ack, respond }) => {
 
 ---
 
+## 💼 Microsoft Teams Integration
+
+### Features
+- Deployment notifications with rich adaptive cards
+- Pull request alerts
+- Incoming webhook support
+- Channel mentions and reactions
+- Integration with Microsoft 365 ecosystem
+
+### Setup
+
+1. **Create Incoming Webhook**
+   - Go to your Teams channel
+   - Click ⋯ (More options)
+   - Select "Connectors"
+   - Find "Incoming Webhook"
+   - Click "Configure"
+   - Name your webhook and upload an image
+   - Copy the webhook URL
+
+2. **Configure Environment**
+```bash
+export TEAMS_WEBHOOK_URL=https://outlook.office.com/webhook/your-webhook-url
+```
+
+3. **Send Notifications**
+```javascript
+const TeamsNotifier = require('./examples/integrations/teams-notifications');
+
+const notifier = new TeamsNotifier(process.env.TEAMS_WEBHOOK_URL);
+
+// Send deployment notification
+await notifier.notifyDeploymentStarted('production', 'v1.2.3', 'deploy-bot');
+await notifier.notifyDeploymentSuccess('production', 'v1.2.3', '3m 45s', 'deploy-bot');
+
+// Send PR notification
+await notifier.notifyPullRequest(
+  'opened',
+  42,
+  'Add new feature',
+  'john.doe',
+  'https://github.com/user/repo'
+);
+
+// Send custom notification
+await notifier.sendCustomNotification(
+  'System Alert',
+  'High memory usage detected on production server',
+  'DC3545'
+);
+```
+
+4. **Adaptive Cards (Advanced)**
+For more complex cards, use the Adaptive Card Designer:
+- Visit https://adaptivecards.io/designer/
+- Design your card
+- Export JSON and use with axios.post
+
+**Example Adaptive Card:**
+```javascript
+const axios = require('axios');
+
+const card = {
+  "@type": "MessageCard",
+  "@context": "https://schema.org/extensions",
+  "summary": "Deployment Status",
+  "themeColor": "0078D4",
+  "title": "🚀 Production Deployment",
+  "sections": [{
+    "activityTitle": "Version 1.2.3 deployed successfully",
+    "facts": [
+      { "name": "Environment:", "value": "Production" },
+      { "name": "Duration:", "value": "3m 45s" },
+      { "name": "Status:", "value": "✅ Success" }
+    ]
+  }],
+  "potentialAction": [{
+    "@type": "OpenUri",
+    "name": "View Details",
+    "targets": [{ "os": "default", "uri": "https://github.com" }]
+  }]
+};
+
+await axios.post(process.env.TEAMS_WEBHOOK_URL, card);
+```
+
+### Microsoft 365 Integration
+
+**Power Automate Integration:**
+1. Create a Power Automate flow
+2. Add "When a HTTP request is received" trigger
+3. Add actions (send email, create task, etc.)
+4. Use the HTTP endpoint as webhook URL
+
+**Microsoft Graph API:**
+For advanced scenarios, use Microsoft Graph:
+```javascript
+const { Client } = require('@microsoft/microsoft-graph-client');
+
+const client = Client.init({
+  authProvider: (done) => {
+    done(null, accessToken);
+  }
+});
+
+// Send email via Graph API
+await client.api('/me/sendMail').post({
+  message: {
+    subject: 'Deployment Notification',
+    body: {
+      contentType: 'HTML',
+      content: '<h1>Deployment completed</h1>'
+    },
+    toRecipients: [
+      { emailAddress: { address: 'team@company.com' } }
+    ]
+  }
+});
+```
+
+---
+
+## 📧 Email Notifications
+
+### Features
+- HTML-formatted deployment notifications
+- Support for multiple recipients
+- SMTP configuration
+- Attachment support
+- Custom templates
+
+### Setup
+
+1. **Configure SMTP**
+```bash
+export SMTP_HOST=smtp.gmail.com
+export SMTP_PORT=587
+export SMTP_USER=your-email@gmail.com
+export SMTP_PASS=your-app-password
+export SMTP_FROM_EMAIL=deployments@company.com
+export SMTP_TO_EMAILS=team@company.com,stakeholders@company.com
+```
+
+2. **For Gmail, enable App Passwords:**
+   - Go to Google Account settings
+   - Security → 2-Step Verification
+   - App passwords → Generate new password
+   - Use this password in SMTP_PASS
+
+3. **Send Notifications**
+```javascript
+const EmailNotifier = require('./examples/integrations/email-notifications');
+
+const notifier = new EmailNotifier({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  user: process.env.SMTP_USER,
+  pass: process.env.SMTP_PASS,
+  fromEmail: process.env.SMTP_FROM_EMAIL,
+  toEmails: process.env.SMTP_TO_EMAILS.split(',')
+});
+
+await notifier.notifyDeploymentSuccess('production', 'v1.2.3', '3m 45s', 'deploy-bot');
+```
+
+**Office 365 SMTP:**
+```bash
+export SMTP_HOST=smtp.office365.com
+export SMTP_PORT=587
+export SMTP_USER=your-email@company.com
+export SMTP_PASS=your-password
+```
+
+---
+
+## 🚨 PagerDuty Integration
+
+### Features
+- Incident management
+- On-call scheduling integration
+- Escalation policies
+- Event triggering
+- Incident resolution tracking
+
+### Setup
+
+1. **Get API Credentials**
+   - Log in to PagerDuty
+   - Go to Configuration → API Access
+   - Create new API Key
+   - Create Integration Key for your service
+
+2. **Configure Environment**
+```bash
+export PAGERDUTY_API_KEY=your-api-key
+export PAGERDUTY_SERVICE_KEY=your-service-integration-key
+export PAGERDUTY_FROM_EMAIL=your-email@company.com
+```
+
+3. **Trigger Incidents**
+```javascript
+const PagerDutyIntegration = require('./examples/integrations/pagerduty-integration');
+
+const pagerduty = new PagerDutyIntegration(
+  process.env.PAGERDUTY_API_KEY,
+  process.env.PAGERDUTY_SERVICE_KEY,
+  process.env.PAGERDUTY_FROM_EMAIL
+);
+
+// Trigger incident on deployment failure
+const incident = await pagerduty.triggerDeploymentFailure(
+  'production',
+  'v1.2.3',
+  'Database connection timeout',
+  'deploy-bot'
+);
+
+// Add note to incident
+await pagerduty.addIncidentNote(incident.id, 'Investigating database connectivity');
+
+// Acknowledge incident
+await pagerduty.acknowledgeIncident(incident.id);
+
+// Resolve incident
+await pagerduty.resolveIncident(incident.id, 'Fixed by restarting database service');
+```
+
+4. **Events API v2 (Simpler approach)**
+```javascript
+// Trigger alert
+await pagerduty.createEvent(
+  'High error rate detected',
+  'error',
+  'api-gateway',
+  'monitoring',
+  { error_rate: '15%', threshold: '5%' }
+);
+```
+
+---
+
 ## 📋 Project Management Tools
 
 ### Jira Integration
