@@ -319,7 +319,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -336,7 +336,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -355,7 +355,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -400,7 +400,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -455,7 +455,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -473,7 +473,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -500,7 +500,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };
@@ -540,7 +540,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
           {
             uri,
             mimeType: 'application/json',
-            text: JSON.stringify(response.data, null, 2),
+            text: JSON.stringify(sanitizeOutput(response.data), null, 2),
           },
         ],
       };
