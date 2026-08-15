@@ -4,7 +4,8 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+# `prepare` runs `npm run build`; install before source is copied, then build explicitly below.
+RUN npm ci --ignore-scripts
 
 COPY . .
 RUN npm run build && npm prune --omit=dev
