@@ -2,6 +2,36 @@
 
 A Model Context Protocol (MCP) server that provides GitHub API integration for AI agents and assistants. This server enables AI tools like Claude to interact with GitHub repositories, issues, pull requests, and more through a standardized interface.
 
+## ✨ New: 100% FREE Tier Automation!
+
+**🎉 Zero Cost Setup - No Credit Card Required!**
+
+We've added complete automation for FREE tier deployments. Deploy to Vercel, Netlify, Render, or Railway without spending a penny!
+
+- ✅ **One-Click Setup** - Complete setup in one command
+- ✅ **Automated Setup Script** - Configure everything in 5 minutes
+- ✅ **Health Check System** - Verify your setup automatically  
+- ✅ **Auto-Deploy Script** - Deploy to FREE platforms with one command
+- ✅ **Auto-Fix Script** - Automatically fix common issues
+- ✅ **GitHub Actions** - Automated CI/CD included
+- ✅ **Monthly Cost**: **$0.00** - Everything uses free tiers!
+
+**One-Click Setup:**
+```bash
+./setup.sh  # Complete automated setup + deployment
+```
+
+**Or step-by-step:**
+```bash
+./scripts/auto-fix.sh          # Fix any issues
+./scripts/free-tier-setup.sh   # Interactive setup
+./scripts/health-check.sh      # Verify everything
+./scripts/auto-deploy.sh       # Deploy automatically
+```
+
+📖 See [**FREE-TIER-GUIDE.md**](./FREE-TIER-GUIDE.md) for complete details!
+📖 See [**AUTOMATION-SUMMARY.md**](./AUTOMATION-SUMMARY.md) for automation details!
+
 ## Features
 
 - **Repository Management**: List, view, and access repository information
@@ -12,6 +42,7 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 - **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
 - **Security**: Built-in validation to detect and prevent token/credential exposure
 - **Enterprise Ready**: Complete integration support for Slack, Jira, AWS, Azure, GCP, Kubernetes, and more
+- **100% FREE Deployment**: Automated scripts for zero-cost deployment
 
 ## Enterprise Integration
 
@@ -29,6 +60,52 @@ For comprehensive enterprise deployment with integrations for Slack, project man
 - 🔐 **Security** - Secrets management, webhook verification, audit logging
 
 ## Quick Start
+
+### 🚀 Option 1: One-Click Setup (Recommended)
+
+**Complete automated setup and deployment in ONE command!**
+
+```bash
+# Clone the repository
+git clone https://github.com/balajirajput96/github-mcp-server-.git
+cd github-mcp-server-
+
+# Run one-click setup (fixes issues, configures, deploys)
+./setup.sh
+```
+
+**That's it!** The script will:
+- ✅ Auto-fix any issues
+- ✅ Run health checks
+- ✅ Guide you through FREE service setup
+- ✅ Install all dependencies automatically
+- ✅ Build and test the project
+- ✅ Create deployment configs
+- ✅ Deploy to your chosen FREE platform
+
+### Option 2: Step-by-Step Setup
+
+**More control over each step:**
+
+```bash
+# Clone the repository
+git clone https://github.com/balajirajput96/github-mcp-server-.git
+cd github-mcp-server-
+
+# Fix any issues automatically
+./scripts/auto-fix.sh
+
+# Run automated FREE tier setup
+./scripts/free-tier-setup.sh
+
+# Verify everything is working
+./scripts/health-check.sh
+
+# Deploy automatically
+./scripts/auto-deploy.sh
+```
+
+### Option 3: Manual Setup
 
 ### Prerequisites
 
@@ -150,6 +227,54 @@ For debugging and testing:
 npm run inspector
 ```
 
+## 🤖 Automation Scripts
+
+We provide several automation scripts to make deployment and maintenance effortless:
+
+### 1. Free Tier Setup (`scripts/free-tier-setup.sh`)
+
+Interactive wizard that configures ALL integrations using FREE tier services only:
+- GitHub, Slack, Vercel, Netlify, Render, Railway, Sentry
+- Creates all config files automatically
+- **Total cost: $0.00/month**
+
+```bash
+./scripts/free-tier-setup.sh
+```
+
+### 2. Health Check (`scripts/health-check.sh`)
+
+Validates your entire setup automatically:
+- Checks Node.js version
+- Verifies dependencies
+- Tests TypeScript compilation
+- Validates environment configuration
+- Checks documentation
+
+```bash
+./scripts/health-check.sh
+```
+
+### 3. Auto Deploy (`scripts/auto-deploy.sh`)
+
+Deploys to FREE platforms automatically:
+- Runs health checks
+- Builds the project
+- Detects deployment platform
+- Deploys with one command
+
+```bash
+./scripts/auto-deploy.sh
+```
+
+### 4. Enterprise Setup (`scripts/enterprise-setup.sh`)
+
+Full enterprise integration setup (includes paid services):
+
+```bash
+./scripts/enterprise-setup.sh
+```
+
 ## Docker Deployment
 
 ### Build Image
@@ -254,6 +379,17 @@ For issues and questions:
 1. Check the GitHub Issues page
 2. Review the MCP documentation
 3. Ensure your GitHub token has correct permissions
+
+## 📚 Documentation
+
+- **[FREE-TIER-GUIDE.md](./FREE-TIER-GUIDE.md)** - 100% free deployment guide (no credit card!)
+- **[QUICK-START-ENTERPRISE.md](./QUICK-START-ENTERPRISE.md)** - 5-minute enterprise setup
+- **[ENTERPRISE-INTEGRATION.md](./ENTERPRISE-INTEGRATION.md)** - Complete enterprise guide
+- **[INTEGRATION-SUMMARY.md](./INTEGRATION-SUMMARY.md)** - All integrations overview
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment strategies
+- **[SECURITY.md](./SECURITY.md)** - Security best practices
+- **[MCP-COMPLIANCE.md](./MCP-COMPLIANCE.md)** - MCP protocol compliance
+- **[PYTHON-CHATBOT-GUIDE.md](./PYTHON-CHATBOT-GUIDE.md)** - Python chatbot guide
 
 ## Additional Resources
 
