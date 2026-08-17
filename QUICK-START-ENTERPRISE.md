@@ -54,7 +54,7 @@ kubectl apply -f k8s/ -n github-mcp
 ### 1. Deploy with Slack Notifications
 
 ```javascript
-const SlackNotifier = require('./examples/integrations/slack-notifications.cjs');
+const SlackNotifier = require('./examples/integrations/slack-notifications');
 
 const notifier = new SlackNotifier(
   process.env.SLACK_BOT_TOKEN,
@@ -66,15 +66,10 @@ await notifier.notifyDeploymentStarted('production', 'v1.0.0', 'bot');
 await notifier.notifyDeploymentSuccess('production', 'v1.0.0', '2m', 'bot');
 ```
 
-**Quick Test:**
-```bash
-npm run example:slack
-```
-
 ### 2. Auto-create Jira Issues on Failure
 
 ```javascript
-const JiraIntegration = require('./examples/integrations/jira-automation.cjs');
+const JiraIntegration = require('./examples/integrations/jira-automation');
 
 const jira = new JiraIntegration(
   process.env.JIRA_URL,
@@ -95,26 +90,7 @@ try {
 }
 ```
 
-**Quick Test:**
-```bash
-npm run example:jira
-```
-
-### 3. Complete Deployment Workflow
-
-Run the full deployment workflow with all integrations:
-
-```bash
-npm run example:workflow
-```
-
-Or test all integrations at once:
-
-```bash
-npm run test:integrations
-```
-
-### 4. Deploy to Multiple Platforms
+### 3. Deploy to Multiple Platforms
 
 **Vercel:**
 ```bash
@@ -211,9 +187,9 @@ Before deploying to production:
 
 - [ ] Environment variables configured
 - [ ] Build succeeds (`npm run build`)
-- [ ] Tests pass (`npm run test:integrations`)
-- [ ] Slack integration tested (`npm run example:slack`)
-- [ ] Jira integration tested (`npm run example:jira`)
+- [ ] Tests pass (if applicable)
+- [ ] Slack integration tested
+- [ ] Jira integration tested
 - [ ] Docker image built
 - [ ] Kubernetes secrets created
 - [ ] SSL/TLS certificates configured

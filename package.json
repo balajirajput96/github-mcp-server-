@@ -25,12 +25,7 @@
     "clean": "rm -rf dist",
     "prepare": "npm run build",
     "check-secrets": "node scripts/check-secrets.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:integrations": "node examples/integrations/test-integrations.cjs",
-    "example:slack": "node examples/integrations/slack-notifications.cjs",
-    "example:jira": "node examples/integrations/jira-automation.cjs",
-    "example:workflow": "node examples/integrations/complete-deployment-workflow.cjs",
-    "setup:enterprise": "bash scripts/enterprise-setup.sh"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
