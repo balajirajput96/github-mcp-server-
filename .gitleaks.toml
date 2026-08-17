@@ -1,0 +1,14 @@
+title = "Repository secret scanning configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Published documentation and example files may contain non-functional credential-shaped placeholders."
+paths = [
+  '''(^|/)SECURITY\.md$''',
+  '''(^|/)\.env\.example$''',
+  '''(^|/)README\.md$''',
+  '''(^|/)test-security-validation\.js$''',
+  '''(^|/)tests/'''
+]
