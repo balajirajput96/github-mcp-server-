@@ -2,6 +2,36 @@
 
 A Model Context Protocol (MCP) server that provides GitHub API integration for AI agents and assistants. This server enables AI tools like Claude to interact with GitHub repositories, issues, pull requests, and more through a standardized interface.
 
+## ✨ New: 100% FREE Tier Automation!
+
+**🎉 Zero Cost Setup - No Credit Card Required!**
+
+We've added complete automation for FREE tier deployments. Deploy to Vercel, Netlify, Render, or Railway without spending a penny!
+
+- ✅ **One-Click Setup** - Complete setup in one command
+- ✅ **Automated Setup Script** - Configure everything in 5 minutes
+- ✅ **Health Check System** - Verify your setup automatically
+- ✅ **Auto-Deploy Script** - Deploy to FREE platforms with one command
+- ✅ **Auto-Fix Script** - Automatically fix common issues
+- ✅ **GitHub Actions** - Automated CI/CD included
+- ✅ **Monthly Cost**: **$0.00** - Everything uses free tiers!
+
+**One-Click Setup:**
+```bash
+./setup.sh  # Complete automated setup + deployment
+```
+
+**Or step-by-step:**
+```bash
+./scripts/auto-fix.sh          # Fix any issues
+./scripts/free-tier-setup.sh   # Interactive setup
+./scripts/health-check.sh      # Verify everything
+./scripts/auto-deploy.sh       # Deploy automatically
+```
+
+📖 See [**FREE-TIER-GUIDE.md**](./FREE-TIER-GUIDE.md) for complete details!
+📖 See [**AUTOMATION-SUMMARY.md**](./AUTOMATION-SUMMARY.md) for automation details!
+
 ## Features
 
 - **Repository Management**: List, view, and access repository information
@@ -10,7 +40,9 @@ A Model Context Protocol (MCP) server that provides GitHub API integration for A
 - **File Operations**: Read file contents from repositories
 - **User Information**: Access authenticated user details
 - **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
+- **Security**: Built-in validation to detect and prevent token/credential exposure
 - **Enterprise Ready**: Complete integration support for Slack, Jira, AWS, Azure, GCP, Kubernetes, and more
+- **100% FREE Deployment**: Automated scripts for zero-cost deployment
 
 ## Enterprise Integration
 
@@ -28,6 +60,52 @@ For comprehensive enterprise deployment with integrations for Slack, project man
 - 🔐 **Security** - Secrets management, webhook verification, audit logging
 
 ## Quick Start
+
+### 🚀 Option 1: One-Click Setup (Recommended)
+
+**Complete automated setup and deployment in ONE command!**
+
+```bash
+# Clone the repository
+git clone https://github.com/balajirajput96/github-mcp-server-.git
+cd github-mcp-server-
+
+# Run one-click setup (fixes issues, configures, deploys)
+./setup.sh
+```
+
+**That's it!** The script will:
+- ✅ Auto-fix any issues
+- ✅ Run health checks
+- ✅ Guide you through FREE service setup
+- ✅ Install all dependencies automatically
+- ✅ Build and test the project
+- ✅ Create deployment configs
+- ✅ Deploy to your chosen FREE platform
+
+### Option 2: Step-by-Step Setup
+
+**More control over each step:**
+
+```bash
+# Clone the repository
+git clone https://github.com/balajirajput96/github-mcp-server-.git
+cd github-mcp-server-
+
+# Fix any issues automatically
+./scripts/auto-fix.sh
+
+# Run automated FREE tier setup
+./scripts/free-tier-setup.sh
+
+# Verify everything is working
+./scripts/health-check.sh
+
+# Deploy automatically
+./scripts/auto-deploy.sh
+```
+
+### Option 3: Manual Setup
 
 ### Prerequisites
 
@@ -149,6 +227,54 @@ For debugging and testing:
 npm run inspector
 ```
 
+## 🤖 Automation Scripts
+
+We provide several automation scripts to make deployment and maintenance effortless:
+
+### 1. Free Tier Setup (`scripts/free-tier-setup.sh`)
+
+Interactive wizard that configures ALL integrations using FREE tier services only:
+- GitHub, Slack, Vercel, Netlify, Render, Railway, Sentry
+- Creates all config files automatically
+- **Total cost: $0.00/month**
+
+```bash
+./scripts/free-tier-setup.sh
+```
+
+### 2. Health Check (`scripts/health-check.sh`)
+
+Validates your entire setup automatically:
+- Checks Node.js version
+- Verifies dependencies
+- Tests TypeScript compilation
+- Validates environment configuration
+- Checks documentation
+
+```bash
+./scripts/health-check.sh
+```
+
+### 3. Auto Deploy (`scripts/auto-deploy.sh`)
+
+Deploys to FREE platforms automatically:
+- Runs health checks
+- Builds the project
+- Detects deployment platform
+- Deploys with one command
+
+```bash
+./scripts/auto-deploy.sh
+```
+
+### 4. Enterprise Setup (`scripts/enterprise-setup.sh`)
+
+Full enterprise integration setup (includes paid services):
+
+```bash
+./scripts/enterprise-setup.sh
+```
+
 ## Docker Deployment
 
 ### Build Image
@@ -213,47 +339,27 @@ This server implements the Model Context Protocol (MCP) specification. All tools
 
 ## Security
 
-🔐 **Security is our top priority!** Please read our [Security Policy](./SECURITY.md) for detailed information.
+This server includes built-in security validation to protect against accidental token exposure:
 
-### Quick Security Guidelines
+- **Automatic Input Validation**: Detects and rejects sensitive data in user input (GitHub tokens, Slack tokens, AWS credentials, API keys, etc.)
+- **Output Sanitization**: Automatically redacts sensitive patterns in responses
+- **Smart Placeholder Detection**: Distinguishes between real credentials and placeholder values
 
-- ⚠️ **NEVER commit tokens or secrets to the repository**
-- ✅ Always use environment variables for sensitive data (`.env` files)
-- ✅ Ensure `.env` files are in `.gitignore` (already configured)
-- ✅ Use minimal required GitHub token scopes (`repo`, `read:user`)
-- ✅ Enable secret scanning on your repository
-- ✅ Run in containerized environments when possible
-- 🔄 Rotate tokens regularly and revoke compromised ones immediately
+For detailed security information, including:
+- Complete list of detected patterns
+- Best practices for token management
+- Incident response procedures
+- Testing security features
 
-### Secret Scanning
+See our comprehensive [**Security Policy**](./SECURITY.md).
 
-This repository includes automated secret scanning via GitHub Actions:
-- **Gitleaks**: Detects secrets in code and git history
-- **TruffleHog**: Finds high-entropy strings and verified secrets
-- **Pattern Matching**: Checks for common token patterns (Slack, GitHub, AWS)
+### Quick Security Tips
 
-The secret scanning workflow runs on every push and pull request to prevent accidental token leaks.
-
-### What to Do If You Accidentally Commit a Secret
-
-1. **Revoke the secret immediately** (GitHub, Slack, AWS, etc.)
-2. Generate a new secret and update your local environment
-3. Contact the repository maintainers for help cleaning git history
-4. Review our [Security Policy](./SECURITY.md) for detailed steps
-
-### Pre-commit Hook (Recommended)
-
-Install Gitleaks to catch secrets before committing:
-
-```bash
-# macOS
-brew install gitleaks
-
-# Run before committing
-gitleaks detect --source . --verbose
-```
-
-For more information, see the [Security Policy](./SECURITY.md).
+- Always use environment variables for sensitive data
+- Never commit GitHub tokens to version control
+- Use minimal required GitHub token scopes
+- Run in containerized environments when possible
+- Immediately revoke any accidentally exposed tokens
 
 ## Contributing
 
@@ -274,6 +380,17 @@ For issues and questions:
 2. Review the MCP documentation
 3. Ensure your GitHub token has correct permissions
 
+## 📚 Documentation
+
+- **[FREE-TIER-GUIDE.md](./FREE-TIER-GUIDE.md)** - 100% free deployment guide (no credit card!)
+- **[QUICK-START-ENTERPRISE.md](./QUICK-START-ENTERPRISE.md)** - 5-minute enterprise setup
+- **[ENTERPRISE-INTEGRATION.md](./ENTERPRISE-INTEGRATION.md)** - Complete enterprise guide
+- **[INTEGRATION-SUMMARY.md](./INTEGRATION-SUMMARY.md)** - All integrations overview
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment strategies
+- **[SECURITY.md](./SECURITY.md)** - Security best practices
+- **[MCP-COMPLIANCE.md](./MCP-COMPLIANCE.md)** - MCP protocol compliance
+- **[PYTHON-CHATBOT-GUIDE.md](./PYTHON-CHATBOT-GUIDE.md)** - Python chatbot guide
+
 ## Additional Resources
 
 ### Python Chatbot Implementation Guide
@@ -292,14 +409,3 @@ For developers interested in building chatbots using Python, we've created a com
 - [Model Context Protocol](https://github.com/modelcontextprotocol)
 - [Claude Desktop](https://claude.ai/desktop)
 - [GitHub REST API](https://docs.github.com/en/rest)
-
-## Testing Integrations
-
-Test the enterprise integration examples with the following commands:
-
-```bash
-npm run test:integrations
-npm run example:slack
-npm run example:jira
-npm run example:workflow
-```
