@@ -20,7 +20,7 @@ describe('security-validator', () => {
     });
 
     it('should ignore placeholders', () => {
-      const result = validateForSensitiveData('ghp_' + 'example12345678901234567890123456789');
+      const result = validateForSensitiveData('ghp_example12345678901234567890123456789');
       expect(result.isValid).toBe(true);
     });
 
@@ -65,8 +65,8 @@ describe('security-validator', () => {
     });
 
     it('should ignore placeholders when sanitizing', () => {
-      const sanitized = sanitizeOutput('Token: ' + 'ghp_' + 'example12345678901234567890123456789');
-      expect(sanitized).toBe('Token: ' + 'ghp_' + 'example12345678901234567890123456789');
+      const sanitized = sanitizeOutput('Token: ghp_example12345678901234567890123456789');
+      expect(sanitized).toBe('Token: ghp_example12345678901234567890123456789');
     });
 
     it('should return primitive non-string types directly', () => {
