@@ -1,5 +1,9 @@
 import { validateForSensitiveData, sanitizeForLogging, sanitizeOutput, validateUserInput } from './security-validator.js';
 
+// Produces a non-secret test fixture at runtime without embedding a token-shaped value in source.
+const syntheticGithubToken = (tokenType: 'p' | 'o' | 'u') =>
+  ['g', 'h', tokenType, '_', 'abcdefghijklmnopqrstuvwxyz1234567890'].join('');
+
 describe('security-validator', () => {
   describe('validateForSensitiveData', () => {
     it('should validate correctly for no sensitive data', () => {
@@ -9,7 +13,7 @@ describe('security-validator', () => {
     });
 
     it('should detect GitHub personal access token', () => {
-      const result = validateForSensitiveData('ghp_' + 'abcdefghijklmnopqrstuvwxyz1234567890');
+      const result = validateForSensitiveData(syntheticGithubToken('p'));
       expect(result.isValid).toBe(false);
       expect(result.violations).toHaveLength(1);
       expect(result.violations[0].pattern).toBe('GitHub Personal Access Token');
@@ -33,15 +37,15 @@ describe('security-validator', () => {
 
   describe('sanitizeOutput', () => {
     it('should redact sensitive tokens in strings', () => {
-      const sanitized = sanitizeOutput('Here is my token ' + 'ghp_' + 'abcdefghijklmnopqrstuvwxyz1234567890 for testing');
+      const sanitized = sanitizeOutput('Here is my token ' + syntheticGithubToken('p') + ' for testing');
       expect(sanitized).toBe('Here is my token [REDACTED_GITHUB_PERSONAL_ACCESS_TOKEN] for testing');
     });
 
     it('should recursively sanitize objects and arrays', () => {
       const input = {
         message: 'hello',
-        token: 'gho_' + 'abcdefghijklmnopqrstuvwxyz1234567890',
-        nested: ['ghu_' + 'abcdefghijklmnopqrstuvwxyz1234567890']
+        token: syntheticGithubToken('o'),
+        nested: [syntheticGithubToken('u')]
       };
 
       const expected = {
@@ -60,11 +64,11 @@ describe('security-validator', () => {
     });
 
     it('should throw error for sensitive input in string', () => {
-      expect(() => validateUserInput('ghp_' + 'abcdefghijklmnopqrstuvwxyz1234567890')).toThrow(/Sensitive data detected in input/);
+      expect(() => validateUserInput(syntheticGithubToken('p'))).toThrow(/Sensitive data detected in input/);
     });
 
     it('should throw error for sensitive input in nested object', () => {
-      expect(() => validateUserInput({ nested: { key: 'ghp_' + 'abcdefghijklmnopqrstuvwxyz1234567890' } })).toThrow(/Sensitive data detected in input.nested.key/);
+      expect(() => validateUserInput({ nested: { key: syntheticGithubToken('p') } })).toThrow(/Sensitive data detected in input.nested.key/);
     });
   });
 });
