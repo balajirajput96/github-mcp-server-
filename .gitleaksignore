@@ -1,3 +1,8 @@
+# Gitleaks ignore file
+# Documentation and examples are already excluded by workflow policy.
+
+# Historical synthetic token fixtures from commits 8b4d93f and cacef43.
+# Current test literals are split and no active credential is present.
 8b4d93f191de94524aeb8bc0653ad8f4fac9663f:src/security-validator.test.ts:github-app-token:44
 8b4d93f191de94524aeb8bc0653ad8f4fac9663f:src/security-validator.test.ts:github-oauth:43
 8b4d93f191de94524aeb8bc0653ad8f4fac9663f:src/security-validator.test.ts:github-pat:12
