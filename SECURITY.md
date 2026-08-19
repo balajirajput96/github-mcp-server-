@@ -69,7 +69,7 @@ aws_secret_access_key=[40 chars]     - AWS Secret Access Key
 api_key=...                          - API Keys
 secret_key=...                       - Secret Keys
 bearer [token]                       - Bearer Tokens
------BEGIN PRIVATE KEY-----          - Private Keys
+PRIVATE_KEY_MATERIAL_REDACTED       - Private Keys
 ```
 
 ## Usage Examples
@@ -86,7 +86,7 @@ When using tools that accept user input (like `create_issue`), the content is au
     "owner": "myorg",
     "repo": "myrepo",
     "title": "Bug report",
-    "body": "My token is ghp_1234567890123456789012345678901234AB"
+    "body": "My token is <github_pat_example_redacted>"
   }
 }
 // Error: Sensitive data detected in body: GitHub Personal Access Token at position 13
@@ -101,7 +101,7 @@ Output data is automatically sanitized:
 {
   "issue": {
     "title": "My Issue",
-    "body": "Secret: ghp_abc123...",
+    "body": "Secret: <github_pat_example_redacted>",
     "user": {...}
   }
 }
