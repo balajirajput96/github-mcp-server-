@@ -10,3 +10,8 @@ cacef43a68084208a23ee0b2d8233421194553a1:src/security-validator.test.ts:github-p
 cacef43a68084208a23ee0b2d8233421194553a1:src/security-validator.test.ts:github-pat:36
 cacef43a68084208a23ee0b2d8233421194553a1:src/security-validator.test.ts:github-pat:63
 cacef43a68084208a23ee0b2d8233421194553a1:src/security-validator.test.ts:github-pat:67
+
+# Historical synthetic fixture removed by PR #55; gitleaks scans deleted content.
+d015ef8a4be0c5b84d3c9cc08a24b9370855d23b:src/security-validator.test.ts.orig:github-pat:23
+d015ef8a4be0c5b84d3c9cc08a24b9370855d23b:src/security-validator.test.ts.orig:github-pat:68
+d015ef8a4be0c5b84d3c9cc08a24b9370855d23b:src/security-validator.test.ts.orig:github-pat:69
