@@ -20,8 +20,15 @@ describe('security-validator', () => {
     });
 
     it('should ignore placeholders', () => {
-      const result = validateForSensitiveData('ghp_' + 'your_token_here');
+      const result = validateForSensitiveData('ghp_' + 'example12345678901234567890123456789');
       expect(result.isValid).toBe(true);
+    });
+
+    it('should handle non-string or empty input', () => {
+      const resultNull = validateForSensitiveData(null as any);
+      expect(resultNull.isValid).toBe(true);
+      const resultUndefined = validateForSensitiveData(undefined as any);
+      expect(resultUndefined.isValid).toBe(true);
     });
   });
 
@@ -56,6 +63,18 @@ describe('security-validator', () => {
 
       expect(sanitizeOutput(input)).toEqual(expected);
     });
+
+    it('should ignore placeholders when sanitizing', () => {
+      const sanitized = sanitizeOutput('Token: ' + 'ghp_' + 'example12345678901234567890123456789');
+      expect(sanitized).toBe('Token: ' + 'ghp_' + 'example12345678901234567890123456789');
+    });
+
+    it('should return primitive non-string types directly', () => {
+      expect(sanitizeOutput(123)).toBe(123);
+      expect(sanitizeOutput(true)).toBe(true);
+      expect(sanitizeOutput(null)).toBe(null);
+      expect(sanitizeOutput(undefined)).toBe(undefined);
+    });
   });
 
   describe('validateUserInput', () => {
@@ -69,6 +88,10 @@ describe('security-validator', () => {
 
     it('should throw error for sensitive input in nested object', () => {
       expect(() => validateUserInput({ nested: { key: syntheticGithubToken('p') } })).toThrow(/Sensitive data detected in input.nested.key/);
+    });
+
+    it('should validate array elements', () => {
+      expect(() => validateUserInput(['clean', syntheticGithubToken('p')])).toThrow(/Sensitive data detected in input\[1\]/);
     });
   });
 });
