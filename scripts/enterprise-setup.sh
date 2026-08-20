@@ -69,7 +69,7 @@ if [[ "$configure_email" =~ ^[Yy]$ ]]; then
     prompt_with_default "SMTP Port" "587" SMTP_PORT
     prompt_with_default "SMTP User" "" SMTP_USER
     prompt_secure "SMTP Password" SMTP_PASS
-    prompt_with_default "From Email" "deployments@company.com" SMTP_FROM_EMAIL
+    prompt_with_default "From Email" "deployments@example.com" SMTP_FROM_EMAIL
     prompt_with_default "To Emails (comma-separated)" "" SMTP_TO_EMAILS
 fi
 
