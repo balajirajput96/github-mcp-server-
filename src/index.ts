@@ -165,6 +165,48 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
+        name: 'update_issue',
+        description: 'Update an existing issue',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            owner: {
+              type: 'string',
+              description: 'Repository owner',
+            },
+            repo: {
+              type: 'string',
+              description: 'Repository name',
+            },
+            issue_number: {
+              type: 'number',
+              description: 'Issue number',
+            },
+            title: {
+              type: 'string',
+              description: 'Issue title',
+            },
+            body: {
+              type: 'string',
+              description: 'Issue body',
+            },
+            state: {
+              type: 'string',
+              description: 'State of the issue (open or closed)',
+              enum: ['open', 'closed'],
+            },
+            labels: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+              description: 'Labels to apply to the issue',
+            },
+          },
+          required: ['owner', 'repo', 'issue_number'],
+        },
+      },
+      {
         name: 'list_pull_requests',
         description: 'List pull requests for a repository',
         inputSchema: {
@@ -397,6 +439,35 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           labels,
         });
         
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'update_issue': {
+        const { owner, repo, issue_number, title, body, state, labels } = args as any;
+
+        // Validate user input for sensitive data
+        if (title !== undefined) validateUserInput(title, 'title');
+        if (body !== undefined) validateUserInput(body, 'body');
+        if (labels !== undefined) validateUserInput(labels, 'labels');
+        if (state !== undefined) validateUserInput(state, 'state');
+
+        const response = await octokit.rest.issues.update({
+          owner,
+          repo,
+          issue_number,
+          ...(title !== undefined && { title }),
+          ...(body !== undefined && { body }),
+          ...(state !== undefined && { state }),
+          ...(labels !== undefined && { labels }),
+        });
+
         return {
           content: [
             {
