@@ -59,6 +59,7 @@ const excludedFiles = [
   'SECURITY.md',
   'test-security-validation.js',
   'check-secrets.js',
+  'package-lock.json',
 ];
 
 for (const file of files) {
