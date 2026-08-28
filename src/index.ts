@@ -368,7 +368,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case 'list_repositories': {
-        const { type = 'all', sort = 'updated', per_page = 30, page = 1 } = args as any;
+        const { type = 'all', sort = 'updated', per_page = 30, page = 1 } = args as { type?: 'all' | 'owner' | 'public' | 'private' | 'member'; sort?: 'created' | 'updated' | 'pushed' | 'full_name'; per_page?: number; page?: number };
         const response = await octokit.rest.repos.listForAuthenticatedUser({
           type,
           sort,
@@ -387,7 +387,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_repository': {
-        const { owner, repo } = args as any;
+        const { owner, repo } = args as { owner: string; repo: string };
         const response = await octokit.rest.repos.get({
           owner,
           repo,
@@ -404,7 +404,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'list_issues': {
-        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as any;
+        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as { owner: string; repo: string; state?: 'open' | 'closed' | 'all'; per_page?: number; page?: number };
         const response = await octokit.rest.issues.listForRepo({
           owner,
           repo,
@@ -424,7 +424,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'create_issue': {
-        const { owner, repo, title, body, labels } = args as any;
+        const { owner, repo, title, body, labels } = args as { owner: string; repo: string; title: string; body?: string; labels?: string[] };
         
         // Validate user input for sensitive data
         validateUserInput(title, 'title');
@@ -450,7 +450,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'update_issue': {
-        const { owner, repo, issue_number, title, body, state, labels } = args as any;
+        const { owner, repo, issue_number, title, body, state, labels } = args as { owner: string; repo: string; issue_number: number; title?: string; body?: string; state?: 'open' | 'closed'; labels?: string[] };
 
         // Validate user input for sensitive data
         if (title !== undefined) validateUserInput(title, 'title');
@@ -479,7 +479,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'list_pull_requests': {
-        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as any;
+        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as { owner: string; repo: string; state?: 'open' | 'closed' | 'all'; per_page?: number; page?: number };
         const response = await octokit.rest.pulls.list({
           owner,
           repo,
@@ -499,7 +499,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_file_content': {
-        const { owner, repo, path, ref = 'main' } = args as any;
+        const { owner, repo, path, ref = 'main' } = args as { owner: string; repo: string; path: string; ref?: string };
         const response = await octokit.rest.repos.getContent({
           owner,
           repo,
@@ -518,7 +518,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_issue': {
-        const { owner, repo, issue_number } = args as any;
+        const { owner, repo, issue_number } = args as { owner: string; repo: string; issue_number: number };
         const response = await octokit.rest.issues.get({
           owner,
           repo,
@@ -536,7 +536,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_pull_request': {
-        const { owner, repo, pull_number } = args as any;
+        const { owner, repo, pull_number } = args as { owner: string; repo: string; pull_number: number };
         const response = await octokit.rest.pulls.get({
           owner,
           repo,
@@ -554,7 +554,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_commit': {
-        const { owner, repo, ref } = args as any;
+        const { owner, repo, ref } = args as { owner: string; repo: string; ref: string };
         const response = await octokit.rest.repos.getCommit({
           owner,
           repo,
@@ -572,7 +572,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_release': {
-        const { owner, repo, tag } = args as any;
+        const { owner, repo, tag } = args as { owner: string; repo: string; tag?: string };
         let response;
         
         if (tag) {

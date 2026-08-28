@@ -62,7 +62,7 @@ export interface ValidationResult {
  * @param strict - If true, uses strict validation (default: true)
  * @returns ValidationResult with any detected violations
  */
-export function validateForSensitiveData(text: string, strict: boolean = true): ValidationResult {
+export function validateForSensitiveData(text: string, _strict: boolean = true): ValidationResult {
   const violations: Array<{ pattern: string; match: string; position: number }> = [];
   
   if (!text || typeof text !== 'string') {
@@ -141,7 +141,7 @@ export function sanitizeForLogging(value: string): string {
  * @param data - The data object to sanitize
  * @returns Sanitized data
  */
-export function sanitizeOutput(data: any): any {
+export function sanitizeOutput(data: unknown): unknown {
   if (typeof data === 'string') {
     let sanitized = data;
     
@@ -168,7 +168,7 @@ export function sanitizeOutput(data: any): any {
   }
   
   if (data && typeof data === 'object') {
-    const sanitized: any = {};
+    const sanitized: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
       sanitized[key] = sanitizeOutput(value);
     }
@@ -184,7 +184,7 @@ export function sanitizeOutput(data: any): any {
  * @param fieldName - The name of the field being validated
  * @throws Error if validation fails
  */
-export function validateUserInput(input: any, fieldName: string = 'input'): void {
+export function validateUserInput(input: unknown, fieldName: string = 'input'): void {
   if (typeof input === 'string') {
     const validation = validateForSensitiveData(input);
     
