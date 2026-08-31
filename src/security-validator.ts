@@ -62,7 +62,7 @@ export interface ValidationResult {
  * @param strict - If true, uses strict validation (default: true)
  * @returns ValidationResult with any detected violations
  */
-export function validateForSensitiveData(text: string, _strict: boolean = true): ValidationResult {
+export function validateForSensitiveData(text: string, strict: boolean = true): ValidationResult {
   const violations: Array<{ pattern: string; match: string; position: number }> = [];
   
   if (!text || typeof text !== 'string') {
