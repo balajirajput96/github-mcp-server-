@@ -334,7 +334,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         throw new Error(`Unknown tool: ${name}`);
     }
   } catch (error) {
-    throw new Error(`Tool execution failed: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`Tool execution failed: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
   }
 });
 
@@ -369,7 +369,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
         ],
       };
     } catch (error) {
-      throw new Error(`Failed to fetch user information: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(`Failed to fetch user information: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     }
   }
 
