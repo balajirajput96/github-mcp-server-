@@ -1,5 +1,7 @@
 # GitHub MCP Server Deployment
 
+> **🚀 Looking for Enterprise Integration?** Check out our comprehensive [**Enterprise Integration Guide**](./ENTERPRISE-INTEGRATION.md) for Slack, Jira, AWS, Azure, Kubernetes, and more!
+
 ## Quick Deploy with Docker
 
 ### 1. Using Docker Compose (Recommended)

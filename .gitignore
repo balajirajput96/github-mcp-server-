@@ -83,6 +83,17 @@ dist
 tmp/
 temp/
 
+# Kubernetes secrets (never commit actual secrets)
+k8s/secrets.yaml
+
+# Backup files
+*.backup
+backups/
+
+# Generated reports
+reports/
+*.report
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
