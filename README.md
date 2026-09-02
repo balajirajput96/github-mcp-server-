@@ -416,3 +416,14 @@ For developers interested in building chatbots using Python, we've created a com
 - [Model Context Protocol](https://github.com/modelcontextprotocol)
 - [Claude Desktop](https://claude.ai/desktop)
 - [GitHub REST API](https://docs.github.com/en/rest)
+
+## Testing Integrations
+
+Test the enterprise integration examples with the following commands:
+
+```bash
+npm run test:integrations
+npm run example:slack
+npm run example:jira
+npm run example:workflow
+```
