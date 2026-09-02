@@ -32,7 +32,7 @@
     "setup:enterprise": "bash scripts/enterprise-setup.sh"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "@octokit/rest": "^21.0.0",
     "dotenv": "^16.0.0"
   },
