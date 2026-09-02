@@ -357,6 +357,39 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ['owner', 'repo'],
         },
       },
+      {
+        name: 'search_repositories',
+        description: 'Search for repositories',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            query: {
+              type: 'string',
+              description: 'Search query',
+            },
+            sort: {
+              type: 'string',
+              description: 'Sort field: stars, forks, help-wanted-issues, updated',
+            },
+            order: {
+              type: 'string',
+              description: 'Sort order: asc or desc',
+              default: 'desc',
+            },
+            per_page: {
+              type: 'number',
+              description: 'Results per page (1-100)',
+              default: 30,
+            },
+            page: {
+              type: 'number',
+              description: 'Page number of the results to fetch',
+              default: 1,
+            },
+          },
+          required: ['query'],
+        },
+      },
     ],
   };
 });
@@ -588,6 +621,29 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           });
         }
         
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'search_repositories': {
+        const { query, sort, order = 'desc', per_page = 30, page = 1 } = args as { query: string; sort?: 'stars' | 'forks' | 'help-wanted-issues' | 'updated'; order?: 'asc' | 'desc'; per_page?: number; page?: number };
+
+        validateUserInput(query, 'query');
+
+        const response = await octokit.rest.search.repos({
+          q: query,
+          sort,
+          order,
+          per_page,
+          page,
+        });
+
         return {
           content: [
             {
