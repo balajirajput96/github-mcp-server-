@@ -24,6 +24,8 @@
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
     "clean": "rm -rf dist",
     "prepare": "npm run build",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "typecheck": "tsc --noEmit",
     "check-secrets": "node scripts/check-secrets.js",
     "test:integrations": "node examples/integrations/test-integrations.cjs",
     "example:slack": "node examples/integrations/slack-notifications.cjs",
@@ -37,7 +39,10 @@
     "dotenv": "^16.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
+    "jest": "^30.5.1",
+    "ts-jest": "^29.4.12",
     "typescript": "^5.0.0"
   },
   "optionalDependencies": {
