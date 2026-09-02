@@ -598,6 +598,87 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
+      case 'get_issue': {
+        const { owner, repo, issue_number } = args as any;
+        const response = await octokit.rest.issues.get({
+          owner,
+          repo,
+          issue_number,
+        });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_pull_request': {
+        const { owner, repo, pull_number } = args as any;
+        const response = await octokit.rest.pulls.get({
+          owner,
+          repo,
+          pull_number,
+        });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_commit': {
+        const { owner, repo, ref } = args as any;
+        const response = await octokit.rest.repos.getCommit({
+          owner,
+          repo,
+          ref,
+        });
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
+      case 'get_release': {
+        const { owner, repo, tag } = args as any;
+        let response;
+        
+        if (tag) {
+          response = await octokit.rest.repos.getReleaseByTag({
+            owner,
+            repo,
+            tag,
+          });
+        } else {
+          response = await octokit.rest.repos.getLatestRelease({
+            owner,
+            repo,
+          });
+        }
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(response.data, null, 2),
+            },
+          ],
+        };
+      }
+
       default:
         throw new Error(`Unknown tool: ${name}`);
     }
