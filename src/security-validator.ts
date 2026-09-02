@@ -35,13 +35,6 @@ const SENSITIVE_PATTERNS = [
   
   // Generic long alphanumeric strings that might be tokens
   { pattern: /[a-zA-Z0-9]{50,}/, name: 'Potential Token (long alphanumeric string)' },
-  
-  // Email addresses (potential PII/credential identifiers)
-  { pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/, name: 'Email Address' },
-  
-  // Password patterns - strings followed by password-related keywords
-  { pattern: /\b[A-Za-z0-9@#$%^&*()_+=\-!]{8,}\s+(?:ye\s+)?(?:password|pasword|passwd|pwd|pass)\b/i, name: 'Password' },
-  { pattern: /\b(?:password|pasword|passwd|pwd|pass)[\s:=]+[A-Za-z0-9@#$%^&*()_+=\-!]{8,}\b/i, name: 'Password' },
 ];
 
 /**
@@ -62,7 +55,7 @@ export interface ValidationResult {
  * @param strict - If true, uses strict validation (default: true)
  * @returns ValidationResult with any detected violations
  */
-export function validateForSensitiveData(text: string, _strict: boolean = true): ValidationResult {
+export function validateForSensitiveData(text: string, strict: boolean = true): ValidationResult {
   const violations: Array<{ pattern: string; match: string; position: number }> = [];
   
   if (!text || typeof text !== 'string') {
@@ -109,9 +102,6 @@ function isPlaceholder(value: string): boolean {
     /test[_-]?token/i,
     /dummy/i,
     /sample/i,
-    /user@example\.com/i,
-    /@example\./i,
-    /no-?reply@/i,
   ];
   
   return placeholderPatterns.some(pattern => pattern.test(value));
@@ -141,7 +131,7 @@ export function sanitizeForLogging(value: string): string {
  * @param data - The data object to sanitize
  * @returns Sanitized data
  */
-export function sanitizeOutput(data: unknown): unknown {
+export function sanitizeOutput(data: any): any {
   if (typeof data === 'string') {
     let sanitized = data;
     
@@ -168,7 +158,7 @@ export function sanitizeOutput(data: unknown): unknown {
   }
   
   if (data && typeof data === 'object') {
-    const sanitized: Record<string, unknown> = {};
+    const sanitized: any = {};
     for (const [key, value] of Object.entries(data)) {
       sanitized[key] = sanitizeOutput(value);
     }
@@ -184,7 +174,7 @@ export function sanitizeOutput(data: unknown): unknown {
  * @param fieldName - The name of the field being validated
  * @throws Error if validation fails
  */
-export function validateUserInput(input: unknown, fieldName: string = 'input'): void {
+export function validateUserInput(input: any, fieldName: string = 'input'): void {
   if (typeof input === 'string') {
     const validation = validateForSensitiveData(input);
     

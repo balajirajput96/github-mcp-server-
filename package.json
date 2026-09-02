@@ -24,8 +24,7 @@
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
     "clean": "rm -rf dist",
     "prepare": "npm run build",
-    "check-secrets": "node scripts/check-secrets.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "check-secrets": "node scripts/check-secrets.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

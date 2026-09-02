@@ -424,7 +424,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'create_issue': {
-        const { owner, repo, title, body, labels } = args as { owner: string; repo: string; title: string; body?: string; labels?: string[] };
+        const { owner, repo, title, body, labels } = args as any;
         
         // Validate user input for sensitive data
         validateUserInput(title, 'title');
@@ -439,35 +439,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           labels,
         });
         
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'update_issue': {
-        const { owner, repo, issue_number, title, body, state, labels } = args as { owner: string; repo: string; issue_number: number; title?: string; body?: string; state?: 'open' | 'closed'; labels?: string[] };
-
-        // Validate user input for sensitive data
-        if (title !== undefined) validateUserInput(title, 'title');
-        if (body !== undefined) validateUserInput(body, 'body');
-        if (labels !== undefined) validateUserInput(labels, 'labels');
-        if (state !== undefined) validateUserInput(state, 'state');
-
-        const response = await octokit.rest.issues.update({
-          owner,
-          repo,
-          issue_number,
-          ...(title !== undefined && { title }),
-          ...(body !== undefined && { body }),
-          ...(state !== undefined && { state }),
-          ...(labels !== undefined && { labels }),
-        });
-
         return {
           content: [
             {
@@ -518,87 +489,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_issue': {
-        const { owner, repo, issue_number } = args as { owner: string; repo: string; issue_number: number };
-        const response = await octokit.rest.issues.get({
-          owner,
-          repo,
-          issue_number,
-        });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_pull_request': {
-        const { owner, repo, pull_number } = args as { owner: string; repo: string; pull_number: number };
-        const response = await octokit.rest.pulls.get({
-          owner,
-          repo,
-          pull_number,
-        });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_commit': {
-        const { owner, repo, ref } = args as { owner: string; repo: string; ref: string };
-        const response = await octokit.rest.repos.getCommit({
-          owner,
-          repo,
-          ref,
-        });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_release': {
-        const { owner, repo, tag } = args as { owner: string; repo: string; tag?: string };
-        let response;
-        
-        if (tag) {
-          response = await octokit.rest.repos.getReleaseByTag({
-            owner,
-            repo,
-            tag,
-          });
-        } else {
-          response = await octokit.rest.repos.getLatestRelease({
-            owner,
-            repo,
-          });
-        }
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_issue': {
         const { owner, repo, issue_number } = args as any;
         const response = await octokit.rest.issues.get({
           owner,
@@ -610,7 +500,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(response.data, null, 2),
+              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
             },
           ],
         };

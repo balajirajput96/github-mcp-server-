@@ -42,7 +42,6 @@ We've added complete automation for FREE tier deployments. Deploy to Vercel, Net
 - **MCP Compliant**: Full Model Context Protocol support for seamless AI integration
 - **Security**: Built-in validation to detect and prevent token/credential exposure
 - **Enterprise Ready**: Complete integration support for Slack, Jira, AWS, Azure, GCP, Kubernetes, and more
-- **100% FREE Deployment**: Automated scripts for zero-cost deployment
 
 ## Enterprise Integration
 
@@ -380,31 +379,7 @@ For issues and questions:
 2. Review the MCP documentation
 3. Ensure your GitHub token has correct permissions
 
-## 📚 Documentation
-
-- **[FREE-TIER-GUIDE.md](./FREE-TIER-GUIDE.md)** - 100% free deployment guide (no credit card!)
-- **[QUICK-START-ENTERPRISE.md](./QUICK-START-ENTERPRISE.md)** - 5-minute enterprise setup
-- **[ENTERPRISE-INTEGRATION.md](./ENTERPRISE-INTEGRATION.md)** - Complete enterprise guide
-- **[INTEGRATION-SUMMARY.md](./INTEGRATION-SUMMARY.md)** - All integrations overview
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment strategies
-- **[SECURITY.md](./SECURITY.md)** - Security best practices
-- **[MCP-COMPLIANCE.md](./MCP-COMPLIANCE.md)** - MCP protocol compliance
-- **[PYTHON-CHATBOT-GUIDE.md](./PYTHON-CHATBOT-GUIDE.md)** - Python chatbot guide
-
 ## Additional Resources
-
-### Microsoft 365 Integration Guide
-
-For organizations using Microsoft 365, we've created a comprehensive integration guide:
-
-📚 **[Microsoft 365 Integration Guide](./M365-INTEGRATION-GUIDE.md)** - Complete guide covering:
-- Microsoft Teams notifications with adaptive cards
-- Outlook/Exchange email integration
-- Microsoft Graph API usage
-- Power Automate workflows
-- Azure Active Directory authentication
-- SharePoint and OneDrive integration
-- Complete M365 deployment workflow examples
 
 ### Python Chatbot Implementation Guide
 
