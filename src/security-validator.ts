@@ -35,6 +35,13 @@ const SENSITIVE_PATTERNS = [
   
   // Generic long alphanumeric strings that might be tokens
   { pattern: /[a-zA-Z0-9]{50,}/, name: 'Potential Token (long alphanumeric string)' },
+  
+  // Email addresses (potential PII/credential identifiers)
+  { pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/, name: 'Email Address' },
+  
+  // Password patterns - strings followed by password-related keywords
+  { pattern: /\b[A-Za-z0-9@#$%^&*()_+=\-!]{8,}\s+(?:ye\s+)?(?:password|pasword|passwd|pwd|pass)\b/i, name: 'Password' },
+  { pattern: /\b(?:password|pasword|passwd|pwd|pass)[\s:=]+[A-Za-z0-9@#$%^&*()_+=\-!]{8,}\b/i, name: 'Password' },
 ];
 
 /**
@@ -102,6 +109,11 @@ function isPlaceholder(value: string): boolean {
     /test[_-]?token/i,
     /dummy/i,
     /sample/i,
+    /user@example\.com/i,
+    /test@test\.com/i,
+    /@test\.com$/i,
+    /@example\./i,
+    /no-?reply@/i,
   ];
   
   return placeholderPatterns.some(pattern => pattern.test(value));
