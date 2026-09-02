@@ -1,28 +1,31 @@
-# Build dependencies and TypeScript output before omitting development tooling.
-FROM node:18-alpine AS build
+# Use official Node.js runtime
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
-# `prepare` runs `npm run build`; install before source is copied, then build explicitly below.
-RUN npm ci --ignore-scripts
 
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
 COPY . .
-RUN npm run build && npm prune --omit=dev
 
-# Keep the runtime image limited to compiled code and production dependencies.
-FROM node:18-alpine AS runtime
+# Build the application
+RUN npm run build
 
-WORKDIR /app
-
-COPY --from=build /app/package*.json ./
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-
-RUN addgroup -g 1001 -S nodejs && adduser -S mcp -u 1001
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S mcp -u 1001
 USER mcp
 
-ENV NODE_ENV=production
+# Expose port (if needed for future HTTP interface)
 EXPOSE 3000
 
+# Set environment
+ENV NODE_ENV=production
+
+# Start the application
 CMD ["npm", "start"]

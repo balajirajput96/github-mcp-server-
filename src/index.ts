@@ -10,7 +10,6 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { Octokit } from '@octokit/rest';
 import * as dotenv from 'dotenv';
-import { validateUserInput, sanitizeOutput } from './security-validator.js';
 
 // Load environment variables
 dotenv.config();
@@ -68,12 +67,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               minimum: 1,
               maximum: 100,
             },
-            page: {
-              type: 'number',
-              description: 'Page number of the results to fetch',
-              default: 1,
-              minimum: 1,
-            },
           },
         },
       },
@@ -121,12 +114,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               minimum: 1,
               maximum: 100,
             },
-            page: {
-              type: 'number',
-              description: 'Page number of the results to fetch',
-              default: 1,
-              minimum: 1,
-            },
           },
           required: ['owner', 'repo'],
         },
@@ -165,48 +152,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
-        name: 'update_issue',
-        description: 'Update an existing issue',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            owner: {
-              type: 'string',
-              description: 'Repository owner',
-            },
-            repo: {
-              type: 'string',
-              description: 'Repository name',
-            },
-            issue_number: {
-              type: 'number',
-              description: 'Issue number',
-            },
-            title: {
-              type: 'string',
-              description: 'Issue title',
-            },
-            body: {
-              type: 'string',
-              description: 'Issue body',
-            },
-            state: {
-              type: 'string',
-              description: 'State of the issue (open or closed)',
-              enum: ['open', 'closed'],
-            },
-            labels: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
-              description: 'Labels to apply to the issue',
-            },
-          },
-          required: ['owner', 'repo', 'issue_number'],
-        },
-      },
-      {
         name: 'list_pull_requests',
         description: 'List pull requests for a repository',
         inputSchema: {
@@ -231,12 +176,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               default: 30,
               minimum: 1,
               maximum: 100,
-            },
-            page: {
-              type: 'number',
-              description: 'Page number of the results to fetch',
-              default: 1,
-              minimum: 1,
             },
           },
           required: ['owner', 'repo'],
@@ -269,94 +208,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ['owner', 'repo', 'path'],
         },
       },
-      {
-        name: 'get_issue',
-        description: 'Get a specific issue by number',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            owner: {
-              type: 'string',
-              description: 'Repository owner',
-            },
-            repo: {
-              type: 'string',
-              description: 'Repository name',
-            },
-            issue_number: {
-              type: 'number',
-              description: 'Issue number',
-            },
-          },
-          required: ['owner', 'repo', 'issue_number'],
-        },
-      },
-      {
-        name: 'get_pull_request',
-        description: 'Get a specific pull request by number',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            owner: {
-              type: 'string',
-              description: 'Repository owner',
-            },
-            repo: {
-              type: 'string',
-              description: 'Repository name',
-            },
-            pull_number: {
-              type: 'number',
-              description: 'Pull request number',
-            },
-          },
-          required: ['owner', 'repo', 'pull_number'],
-        },
-      },
-      {
-        name: 'get_commit',
-        description: 'Get a specific commit',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            owner: {
-              type: 'string',
-              description: 'Repository owner',
-            },
-            repo: {
-              type: 'string',
-              description: 'Repository name',
-            },
-            ref: {
-              type: 'string',
-              description: 'Commit SHA or branch name',
-            },
-          },
-          required: ['owner', 'repo', 'ref'],
-        },
-      },
-      {
-        name: 'get_release',
-        description: 'Get the latest release or a specific release by tag',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            owner: {
-              type: 'string',
-              description: 'Repository owner',
-            },
-            repo: {
-              type: 'string',
-              description: 'Repository name',
-            },
-            tag: {
-              type: 'string',
-              description: 'Release tag (optional, gets latest if not provided)',
-            },
-          },
-          required: ['owner', 'repo'],
-        },
-      },
     ],
   };
 });
@@ -368,26 +219,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case 'list_repositories': {
-        const { type = 'all', sort = 'updated', per_page = 30, page = 1 } = args as { type?: 'all' | 'owner' | 'public' | 'private' | 'member'; sort?: 'created' | 'updated' | 'pushed' | 'full_name'; per_page?: number; page?: number };
+        const { type = 'all', sort = 'updated', per_page = 30 } = args as any;
         const response = await octokit.rest.repos.listForAuthenticatedUser({
           type,
           sort,
           per_page,
-          page,
         });
         
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+              text: JSON.stringify(response.data, null, 2),
             },
           ],
         };
       }
 
       case 'get_repository': {
-        const { owner, repo } = args as { owner: string; repo: string };
+        const { owner, repo } = args as any;
         const response = await octokit.rest.repos.get({
           owner,
           repo,
@@ -397,27 +247,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+              text: JSON.stringify(response.data, null, 2),
             },
           ],
         };
       }
 
       case 'list_issues': {
-        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as { owner: string; repo: string; state?: 'open' | 'closed' | 'all'; per_page?: number; page?: number };
+        const { owner, repo, state = 'open', per_page = 30 } = args as any;
         const response = await octokit.rest.issues.listForRepo({
           owner,
           repo,
           state,
           per_page,
-          page,
         });
         
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+              text: JSON.stringify(response.data, null, 2),
             },
           ],
         };
@@ -425,12 +274,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'create_issue': {
         const { owner, repo, title, body, labels } = args as any;
-        
-        // Validate user input for sensitive data
-        validateUserInput(title, 'title');
-        validateUserInput(body, 'body');
-        validateUserInput(labels, 'labels');
-        
         const response = await octokit.rest.issues.create({
           owner,
           repo,
@@ -443,121 +286,39 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+              text: JSON.stringify(response.data, null, 2),
             },
           ],
         };
       }
 
       case 'list_pull_requests': {
-        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as { owner: string; repo: string; state?: 'open' | 'closed' | 'all'; per_page?: number; page?: number };
+        const { owner, repo, state = 'open', per_page = 30 } = args as any;
         const response = await octokit.rest.pulls.list({
           owner,
           repo,
           state,
           per_page,
-          page,
         });
         
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+              text: JSON.stringify(response.data, null, 2),
             },
           ],
         };
       }
 
       case 'get_file_content': {
-        const { owner, repo, path, ref = 'main' } = args as { owner: string; repo: string; path: string; ref?: string };
+        const { owner, repo, path, ref = 'main' } = args as any;
         const response = await octokit.rest.repos.getContent({
           owner,
           repo,
           path,
           ref,
         });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_issue': {
-        const { owner, repo, issue_number } = args as any;
-        const response = await octokit.rest.issues.get({
-          owner,
-          repo,
-          issue_number,
-        });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(sanitizeOutput(response.data), null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_pull_request': {
-        const { owner, repo, pull_number } = args as any;
-        const response = await octokit.rest.pulls.get({
-          owner,
-          repo,
-          pull_number,
-        });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(response.data, null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_commit': {
-        const { owner, repo, ref } = args as any;
-        const response = await octokit.rest.repos.getCommit({
-          owner,
-          repo,
-          ref,
-        });
-        
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(response.data, null, 2),
-            },
-          ],
-        };
-      }
-
-      case 'get_release': {
-        const { owner, repo, tag } = args as any;
-        let response;
-        
-        if (tag) {
-          response = await octokit.rest.repos.getReleaseByTag({
-            owner,
-            repo,
-            tag,
-          });
-        } else {
-          response = await octokit.rest.repos.getLatestRelease({
-            owner,
-            repo,
-          });
-        }
         
         return {
           content: [
@@ -603,7 +364,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
           {
             uri,
             mimeType: 'application/json',
-            text: JSON.stringify(sanitizeOutput(response.data), null, 2),
+            text: JSON.stringify(response.data, null, 2),
           },
         ],
       };

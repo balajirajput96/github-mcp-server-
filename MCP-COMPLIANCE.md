@@ -9,16 +9,12 @@ This GitHub MCP Server implements the Model Context Protocol (MCP) specification
 - ✅ Version: `1.0.0`
 - ✅ Capabilities declaration
 
-### 2. Tools (10 implemented)
+### 2. Tools (6 implemented)
 - ✅ `list_repositories` - List user repositories
 - ✅ `get_repository` - Get repository details
 - ✅ `list_issues` - List repository issues
 - ✅ `create_issue` - Create new issues
-- ✅ `get_issue` - Get a specific issue by number
 - ✅ `list_pull_requests` - List pull requests
-- ✅ `get_pull_request` - Get a specific pull request by number
-- ✅ `get_commit` - Get a specific commit
-- ✅ `get_release` - Get releases (latest or by tag)
 - ✅ `get_file_content` - Read file contents
 
 ### 3. Resources (1 implemented)
