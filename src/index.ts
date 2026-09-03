@@ -67,6 +67,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               minimum: 1,
               maximum: 100,
             },
+            page: {
+              type: 'number',
+              description: 'Page number of the results to fetch',
+              default: 1,
+              minimum: 1,
+            },
           },
         },
       },
@@ -113,6 +119,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               default: 30,
               minimum: 1,
               maximum: 100,
+            },
+            page: {
+              type: 'number',
+              description: 'Page number of the results to fetch',
+              default: 1,
+              minimum: 1,
             },
           },
           required: ['owner', 'repo'],
@@ -177,6 +189,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               minimum: 1,
               maximum: 100,
             },
+            page: {
+              type: 'number',
+              description: 'Page number of the results to fetch',
+              default: 1,
+              minimum: 1,
+            },
           },
           required: ['owner', 'repo'],
         },
@@ -219,11 +237,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case 'list_repositories': {
-        const { type = 'all', sort = 'updated', per_page = 30 } = args as any;
+        const { type = 'all', sort = 'updated', per_page = 30, page = 1 } = args as any;
         const response = await octokit.rest.repos.listForAuthenticatedUser({
           type,
           sort,
           per_page,
+          page,
         });
         
         return {
@@ -254,12 +273,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'list_issues': {
-        const { owner, repo, state = 'open', per_page = 30 } = args as any;
+        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as any;
         const response = await octokit.rest.issues.listForRepo({
           owner,
           repo,
           state,
           per_page,
+          page,
         });
         
         return {
@@ -293,12 +313,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'list_pull_requests': {
-        const { owner, repo, state = 'open', per_page = 30 } = args as any;
+        const { owner, repo, state = 'open', per_page = 30, page = 1 } = args as any;
         const response = await octokit.rest.pulls.list({
           owner,
           repo,
           state,
           per_page,
+          page,
         });
         
         return {
