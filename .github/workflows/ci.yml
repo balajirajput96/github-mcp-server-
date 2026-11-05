@@ -32,6 +32,9 @@ jobs:
     - name: Check if built successfully
       run: test -f dist/index.js
 
+    - name: Run tests
+      run: npm test
+
   docker:
     needs: test
     runs-on: ubuntu-latest
